@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { StorageStack } from '../lib/storage-stack';
+import { ArdStack } from '../lib/ard-stack';
 
 const app = new cdk.App();
-new StorageStack(app, 'StorageStack');
+new ArdStack(app, 'ArdStack');
