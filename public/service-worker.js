@@ -9,8 +9,8 @@ const getQueryParams = () => {
 
 const { MODE, VERSION } = getQueryParams();
 
-const isDevelopment = MODE === 'development';
-const CACHE_NAME = `my-app-cache-v${VERSION}`;
+const isProduction = MODE === 'production';
+const CACHE_NAME = `ard-cache-v${VERSION}`;
 
 const DEV_FILES_TO_CACHE = [
     '/',
@@ -19,37 +19,29 @@ const DEV_FILES_TO_CACHE = [
     '/src/app.ts'
 ];
 
-console.log('Service Worker script started.');
-
 self.addEventListener('install', (event) => {
-    console.log('Installing...');
-
-    if (isDevelopment) {
+    if (!isProduction) {
         // Cache development files
         event.waitUntil(
             caches.open(CACHE_NAME)
-                .then(cache => {
-                    console.log('Opened cache:', CACHE_NAME);
-                    console.log('Files to cache:', DEV_FILES_TO_CACHE);
-                    return cache.addAll(DEV_FILES_TO_CACHE);
-                })
+                .then(cache => cache.addAll(DEV_FILES_TO_CACHE))
         );
     } else {
         // Cache production files using the manifest
         event.waitUntil(
             fetch('/.vite/manifest.json')
-                .then(response => response.json())
+                .then(response => response.headers.get('content-type').includes('text/html') ? response : response.json())
                 .then(manifest => {
                     const filesToCache = [
                         '/',
                         '/index.html',
+                        '/manifest.json',
+                        '/fav.ico',
                         ...Object.values(manifest).map(entry => [entry.css[0], entry.file]).flat(),
                     ];
 
-                    console.log('Files to cache:', filesToCache);
                     return caches.open(CACHE_NAME)
                         .then(cache => {
-                            console.log('Opened cache:', CACHE_NAME);
                             return cache.addAll(filesToCache);
                         });
                 })
@@ -61,33 +53,21 @@ self.addEventListener('activate', (event) => {
     const cacheWhitelist = [CACHE_NAME];
 
     event.waitUntil(
-        caches.keys().then(cacheNames => {
-            console.log('Caching...');
-            return Promise.all(
+        caches.keys().then(cacheNames => Promise.all(
                 cacheNames.map(cacheName => {
                     if (!cacheWhitelist.includes(cacheName)) {
-                        console.log('Deleting file from cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
-            );
-        })
+            )
+        )
     );
 });
 
 self.addEventListener('fetch', (event) => {
-  console.log('fetch', caches, event.request);
-
     event.respondWith(
         caches.match(event.request)
-            .then(response => {
-                console.log('Responding...', response);
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request);
-            }).catch(err => {
-          console.log(err);
-        })
+            .then(response => response || fetch(event.request))
+            .catch(err => console.log(err))
     );
 });
