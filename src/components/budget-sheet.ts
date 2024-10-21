@@ -9,6 +9,7 @@ class BudgetSheet extends HTMLElement {
 
     constructor() {
         super();
+        const template = document.createElement("ard-budge");
         this.attachShadow({ mode: 'open' });
     }
 
@@ -44,5 +45,3 @@ class BudgetSheet extends HTMLElement {
 }
 
 customElements.define('ard-budge', BudgetSheet);
-
-export default BudgetSheet;
