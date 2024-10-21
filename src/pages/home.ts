@@ -1,12 +1,10 @@
 import HomeStyles from "@styles/home.css?inline"
 import HomeTemplate from "@templates/home.html?raw";
 import getStyleElement from '@utils/getStyleElement';
-import store, {Unsubscribe} from "@store/store";
-import "@components/budget";
+import "@components/budget-sheet";
+import "@components/table-head";
 
 class HomePage extends HTMLElement {
-    private unsubscribe: Unsubscribe | null = null;
-
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -17,16 +15,9 @@ class HomePage extends HTMLElement {
             this.shadowRoot.innerHTML = HomeTemplate;
             this.shadowRoot.appendChild(getStyleElement(HomeStyles));
         }
-
-        this.unsubscribe = store.subscribe(() => {
-            //TODO: Implement
-        });
     }
 
     disconnectedCallback(): void {
-        if (this.unsubscribe) {
-            this.unsubscribe();
-        }
     }
 }
 

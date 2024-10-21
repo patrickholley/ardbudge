@@ -1,2 +1,13 @@
 #home-page  {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+ard-budge {
+    width: 80%;
+    max-width: 500px;
+    min-width: 300px;
 }

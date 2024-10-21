@@ -23,7 +23,6 @@
     "paths": {
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
-      "@store/*": ["store/*"],
       "@styles/*": ["styles/*"],
       "@templates/*": ["templates/*"],
       "@app-types/*": ["types/*"],
