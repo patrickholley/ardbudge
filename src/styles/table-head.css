@@ -1,23 +1,5 @@
-table {
-
-}
-
-th {
-    background-color: lavender;
-    border: 1px solid black;
-    padding: 5px;
-}
-
-#date {
-    width: 25%;
-    border-top-left-radius: 10px;
-}
-
-#desc {
-    width: 50%;
-}
-
-#cost {
-    width: 25%;
-    border-top-right-radius: 10px;
+div {
+    height: 100px;
+    width: 100px;
+    background-color: black;
 }

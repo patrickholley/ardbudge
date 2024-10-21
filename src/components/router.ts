@@ -1,4 +1,4 @@
-import '@pages/home';
+import '@components/home-page.ts';
 import AppConstants from "@utils/appConstants";
 import {Path, Routes} from "@app-types/router";
 

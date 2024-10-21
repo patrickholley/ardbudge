@@ -1,8 +1,8 @@
 import HomeTemplate from "@templates/home.html?raw";
-import getStyleElement from '@utils/getStyleElement';
+import getStyleElement from '@utils/getStyleElement.ts';
 import HomeStyles from "@styles/home.css?inline"
-import "@components/budget-sheet";
-import "@components/table-head";
+import "@components/ard-budge.ts";
+import "@components/table-head.ts";
 
 class HomePage extends HTMLElement {
     constructor() {
