@@ -1,0 +1,29 @@
+<template id="expense-form">
+    <div id="form-modal">
+        <div id="modal-content">
+            <form name="expenseForm" novalidate>
+                <fieldset>
+                    <legend>
+                        Expense Information
+                    </legend>
+                    <label>
+                        Date
+                        <input type="date" name="date" />
+                    </label>
+                    <label>
+                        Description
+                        <input type="text" name="description" />
+                    </label>
+                    <label>
+                        Cost
+                        <input type="number" name="cost" />
+                    </label>
+                </fieldset>
+                <div id="action-footer">
+                    <button id="button__submit" disabled>Submit</button>
+                    <button type="button" id="button__cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</template>
