@@ -1,20 +1,21 @@
 import {ArdBudgeDatum, ArdListener, ArdState} from "@app-types/store";
 
 class Store {
-    private state: ArdState;
-    private listeners: ArdListener[] = [];
+    private readonly _state: ArdState;
+    private _listeners: ArdListener[] = [];
 
     constructor(initialState: ArdState) {
-        this.state = initialState;
+        const savedState = localStorage.getItem('storeState');
+        this._state = savedState ? JSON.parse(savedState) : initialState;
     }
 
     getBudges(): ArdState {
-        return this.state;
+        return this._state;
     }
 
     addBudge(budgeName: string): void {
-        if (!this.state[budgeName]) {
-            this.state[budgeName] = {
+        if (!this._state[budgeName]) {
+            this._state[budgeName] = {
                 name: budgeName,
                 rows: []
             };
@@ -26,8 +27,8 @@ class Store {
     }
 
     private updateBudge(budgeName: string, updates: {name: string} | { rows: ArdBudgeDatum[]}): void {
-        this.state[budgeName] = {
-            ...this.state[budgeName],
+        this._state[budgeName] = {
+            ...this._state[budgeName],
             ...updates
         };
 
@@ -37,34 +38,36 @@ class Store {
     addRow(budgeName: string, row: ArdBudgeDatum): void {
         this.updateBudge(
             budgeName,
-            { rows: [...this.state[budgeName].rows, row] }
+            { rows: [...this._state[budgeName].rows, row] }
         );
     }
 
     deleteRow(budgeName: string, rowIndex: number): void {
         this.updateBudge(
             budgeName,
-            { rows: this.state[budgeName].rows.toSpliced(rowIndex, 1) }
+            { rows: this._state[budgeName].rows.toSpliced(rowIndex, 1) }
         );
     }
 
     editRow(budgeName: string, rowIndex: number, row: ArdBudgeDatum): void {
         this.updateBudge(
             budgeName,
-            { rows: Object.assign([], this.state[budgeName].rows, {[rowIndex]: row}) }
+            { rows: Object.assign([], this._state[budgeName].rows, {[rowIndex]: row}) }
         );
     }
 
     subscribe(listener: ArdListener): void {
-        this.listeners.push(listener);
+        this._listeners.push(listener);
     }
 
     unsubscribe(listener: ArdListener): void {
-        this.listeners = this.listeners.filter(l => l !== listener);
+        this._listeners = this._listeners.filter(l => l !== listener);
     }
 
     private notifyListeners(): void {
-        this.listeners.forEach(listener => listener(this.state));
+        localStorage.setItem('storeState', JSON.stringify(this._state));
+
+        this._listeners.forEach(listener => listener(this._state));
     }
 }
 

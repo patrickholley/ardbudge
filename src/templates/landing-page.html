@@ -1,0 +1,22 @@
+<style>
+
+</style>
+<div class="container">
+    <div class="budge-list">
+        <h3>Select Budge</h3>
+        <ul>
+            ${this._budges.map(budge => `<li>${budge}</li>`).join('')}
+        </ul>
+    </div>
+    <div class="new-budge">
+        <h3>Add New Budge</h3>
+        <label>
+            <input
+                type="text"
+                value="${this._newBudgeName}"
+                placeholder="New budge name"
+            />
+        </label>
+        <button>Add Budge</button>
+    </div>
+</div>

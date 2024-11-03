@@ -26,6 +26,7 @@
       "@styles/*": ["styles/*"],
       "@templates/*": ["templates/*"],
       "@app-types/*": ["types/*"],
+      "@store": ["store.ts"],
       "@utils/*": ["utils/*"]
     },
     "typeRoots": ["./src/types", "./node_modules/@types"]

@@ -1,0 +1,13 @@
+:host {
+    display: block;
+    font-family: Arial, sans-serif;
+}
+.container {
+    padding: 16px;
+}
+.budge-list, .new-budge {
+    margin-bottom: 16px;
+}
+.new-budge input {
+    margin-right: 8px;
+}

@@ -1,24 +1,11 @@
-import ExpenseFormTemplate from "@templates/expense-form.html?raw";
-import getStyleElement from '@utils/getStyleElement';
-import ExpenseFormStyles from "@styles/expense-form.css?inline"
-import {store} from "../store";
+import {store} from "@store";
 import {ArdBudgeDatum} from "@app-types/store";
+import render from "@utils/render";
 
 class ExpenseForm extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
-
-        const range = document.createRange();
-        range.selectNode(document.body);
-        const fragment = range.createContextualFragment(ExpenseFormTemplate);
-        const template = fragment.querySelector('#expense-form') as HTMLTemplateElement;
-
-        if (template && this.shadowRoot) {
-            const content = template.content.cloneNode(true);
-            this.shadowRoot.appendChild(content);
-            this.shadowRoot.appendChild(getStyleElement(ExpenseFormStyles));
-        }
+        render(this);
     }
 
     toggleOpen = (shouldBeOpen: boolean) => {
@@ -38,17 +25,21 @@ class ExpenseForm extends HTMLElement {
     onSubmit = (e: SubmitEvent) => {
         e.preventDefault();
 
+        const formEntries = Object.fromEntries(
+            new FormData(e.target as HTMLFormElement).entries()
+        ) as unknown as ArdBudgeDatum;
+
+        formEntries.cost = parseFloat(formEntries.cost).toFixed(2);
+
         store.addRow(
             'MyFirstBudge',
-            Object.fromEntries(
-                new FormData(e.target as HTMLFormElement).entries()
-            ) as unknown as ArdBudgeDatum
+            formEntries
         );
 
         this.toggleOpen(false);
     }
 
-    connectedCallback() {
+    onRender() {
         document.addEventListener('open-expense-form', () => this.toggleOpen(true));
         this.shadowRoot?.querySelector('form')?.addEventListener('submit', this.onSubmit);
         this.shadowRoot?.querySelector('#button__cancel')

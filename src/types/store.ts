@@ -1,8 +1,6 @@
-export type ArdBudgeDatum = {
-    date: string;
-    description: string;
-    cost: number;
-}
+type ArdBudgeDatumProps = 'date' | 'description' | 'cost';
+
+export type ArdBudgeDatum = Record<ArdBudgeDatumProps, string>;
 
 export type ArdBudgeData = {
     name: string;
@@ -10,4 +8,4 @@ export type ArdBudgeData = {
 }
 
 export type ArdState = Record<string, ArdBudgeData>;
-export type ArdListener = (state: ArdState) => void;
+export type ArdListener = (state?: ArdState) => void;
