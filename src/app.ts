@@ -1,5 +1,4 @@
 import "@components/router";
-import "@styles/app.css"
 
 const { MODE, VITE_APP_VERSION } = import.meta.env;
 

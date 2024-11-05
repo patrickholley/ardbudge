@@ -1,3 +1,5 @@
-div {
-    background-color: pink;
+@import "mixins.css";
+
+#landing-container {
+    @mixin flex-center;
 }

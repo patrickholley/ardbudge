@@ -74,7 +74,7 @@ export const updateLoaderVisibility = () => {
                 if (spinner) document.body.removeChild(spinner);
                 appUI.style.visibility = 'visible';
                 removeLoaderDebounce = null;
-            }, 500);
+            }, 250);
 
             removeLoaderDebounce();
         }

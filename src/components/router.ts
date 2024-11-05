@@ -22,7 +22,6 @@ class Router {
         const { pathname } = window.location;
         let route: PageComponent | undefined;
 
-        // Function to match dynamic paths
         const matchDynamicRoute = (path: string): [string, string] | undefined => {
             const parts = Object.entries(this._routes).find(([route]) => {
                 const routePattern = new RegExp(`^${route.replace(/:[^\s/]+/g, '([\\w-]+)')}$`);

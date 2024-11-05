@@ -1,5 +1,8 @@
+@import "mixins.css";
+
 ard-budge {
-    width: 80%;
+    @mixin flex-center;
     max-width: 500px;
     min-width: 300px;
+    width: 80%;
 }

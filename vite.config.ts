@@ -1,5 +1,7 @@
 import {defineConfig,loadEnv} from "vite";
 import * as path from "node:path";
+// @ts-ignore
+import postcssMixins from "postcss-mixins";
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
@@ -15,6 +17,13 @@ export default defineConfig(({ mode }) => {
                     assetFileNames: 'assets/[name].[hash].[ext]',
                     format: 'esm'
                 }
+            }
+        },
+        css: {
+            postcss: {
+                plugins: [
+                    postcssMixins
+                ]
             }
         },
         define: {
