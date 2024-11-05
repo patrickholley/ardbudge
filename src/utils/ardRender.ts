@@ -2,6 +2,7 @@ import { ArdListener } from "@app-types/store";
 import { store } from "@store";
 import pascalToSnake from "./pascalToSnake";
 import getFileStrings from "./getFileStrings";
+import router from "@components/router";
 
 const ardRender = (component: HTMLElement) => {
     const componentId = pascalToSnake(component.componentTag || '');
@@ -20,6 +21,7 @@ const ardRender = (component: HTMLElement) => {
             if (template) {
                 const content = template.content.cloneNode(true);
                 shadowRoot.appendChild(content);
+                router.rewireAnchors(shadowRoot);
             }
 
             const style = document.createElement('style');

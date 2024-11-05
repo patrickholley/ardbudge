@@ -1,4 +1,4 @@
-import {store} from "@store";
+import { store } from "@store";
 import debounce from "@utils/debounce";
 
 const componentTag = 'loading-widget';
@@ -11,8 +11,8 @@ class LoadingWidget extends HTMLElement {
         shadow.innerHTML = `
             <style>
                 .loader {
-                    margin-top: 40px;
                     position: relative;
+                    margin-top: 120px;
                     width: 80px;
                     height: 120px;
                     animation: heartBeat 2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -35,6 +35,19 @@ class LoadingWidget extends HTMLElement {
                 .loader:after {
                     transform: rotate(-45deg);
                 }
+                
+                .overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: #5B7859;
+                    display: flex;
+                    justify-content: center;
+                    z-index: 9999;
+                }
+                
                 @keyframes heartBeat {
                     0% { transform: scale(0.95) }
                     5% { transform: scale(1.1) }
@@ -44,7 +57,9 @@ class LoadingWidget extends HTMLElement {
                     100% { transform: scale(0.9) }
                 }
             </style>
-            <div class="loader"></div>
+            <div class="overlay">
+                <div class="loader"></div>
+            </div>
         `;
     }
 }
@@ -53,8 +68,8 @@ let removeLoaderDebounce: { (): void; cancel: () => void } | null = null;
 
 export const updateLoaderVisibility = () => {
     const loadingCount = store.getLoadingCount();
-    const loader = document.querySelector(componentTag);
-    const appUI = document.getElementById('app');
+    let loader = document.querySelector(componentTag) as HTMLElement | null;
+    const appUI = document.getElementById('app') as HTMLElement | null;
 
     if (appUI) {
         if (loadingCount > 0) {
@@ -64,17 +79,21 @@ export const updateLoaderVisibility = () => {
             }
 
             if (!loader) {
-                const newSpinner = document.createElement(componentTag);
-                document.body.appendChild(newSpinner);
-                appUI.style.visibility = 'hidden';
+                loader = document.createElement(componentTag);
+                document.body.appendChild(loader);
             }
+
+            loader.style.display = 'block';
         } else {
+            document.documentElement.style.background = 'darkseagreen';
             removeLoaderDebounce = debounce(() => {
-                const spinner = document.querySelector(componentTag);
-                if (spinner) document.body.removeChild(spinner);
-                appUI.style.visibility = 'visible';
-                removeLoaderDebounce = null;
-            }, 250);
+                requestAnimationFrame(() => {
+                    if (loader) {
+                        loader.style.display = 'none';
+                    }
+                    removeLoaderDebounce = null;
+                });
+            }, 500);
 
             removeLoaderDebounce();
         }

@@ -5,6 +5,8 @@ import {PageComponent, Path, Routes} from "@app-types/router";
 import {updateLoaderVisibility} from "@components/loading-widget";
 import {store} from "@store";
 
+let router: Router;
+
 class Router {
     private readonly _routes: Routes;
 
@@ -16,6 +18,22 @@ class Router {
 
         updateLoaderVisibility();
         store.subscribe(updateLoaderVisibility);
+    }
+
+    navigate(path: string): void {
+        window.history.pushState({}, '', path);
+        router.handlePopState();
+    }
+
+    rewireAnchors (shadowRoot: ShadowRoot) {
+        shadowRoot.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', (event: Event) => {
+                event.preventDefault();
+                const target = event.currentTarget as HTMLAnchorElement;
+                const href = target.getAttribute('href');
+                if (href) router.navigate(href);
+            });
+        });
     }
 
     handlePopState(): void {
@@ -54,4 +72,5 @@ class Router {
     }
 }
 
-new Router();
+router = new Router();
+export default router;
