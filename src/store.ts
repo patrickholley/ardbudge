@@ -1,21 +1,25 @@
-import {ArdBudgeDatum, ArdListener, ArdState} from "@app-types/store";
+import {ArdBudgeDatum, ArdBudges, ArdListener, ArdState} from '@app-types/store';
 
 class Store {
     private readonly _state: ArdState;
     private _listeners: ArdListener[] = [];
 
     constructor(initialState: ArdState) {
-        const savedState = localStorage.getItem('storeState');
-        this._state = savedState ? JSON.parse(savedState) : initialState;
+        const localBudges = localStorage.getItem('budges');
+        this._state = { ...initialState, ...(localBudges && { Budges: JSON.parse(localBudges) }) };
     }
 
-    getBudges(): ArdState {
-        return this._state;
+    getBudges(): ArdBudges {
+        return this._state.Budges;
+    }
+
+    getLoadingCount(): number {
+        return this._state.LoadingCount;
     }
 
     addBudge(budgeName: string): void {
-        if (!this._state[budgeName]) {
-            this._state[budgeName] = {
+        if (!this._state.Budges[budgeName]) {
+            this._state.Budges[budgeName] = {
                 name: budgeName,
                 rows: []
             };
@@ -26,9 +30,9 @@ class Store {
         this.notifyListeners();
     }
 
-    private updateBudge(budgeName: string, updates: {name: string} | { rows: ArdBudgeDatum[]}): void {
-        this._state[budgeName] = {
-            ...this._state[budgeName],
+    private updateBudge(budgeName: string, updates: { name?: string; rows?: ArdBudgeDatum[] }): void {
+        this._state.Budges[budgeName] = {
+            ...this._state.Budges[budgeName],
             ...updates
         };
 
@@ -36,24 +40,29 @@ class Store {
     }
 
     addRow(budgeName: string, row: ArdBudgeDatum): void {
-        this.updateBudge(
-            budgeName,
-            { rows: [...this._state[budgeName].rows, row] }
-        );
+        this.updateBudge(budgeName, { rows: [...this._state.Budges[budgeName].rows, row] });
     }
 
     deleteRow(budgeName: string, rowIndex: number): void {
-        this.updateBudge(
-            budgeName,
-            { rows: this._state[budgeName].rows.toSpliced(rowIndex, 1) }
-        );
+        this.updateBudge(budgeName, { rows: this._state.Budges[budgeName].rows.slice(0, rowIndex).concat(this._state.Budges[budgeName].rows.slice(rowIndex + 1)) });
     }
 
     editRow(budgeName: string, rowIndex: number, row: ArdBudgeDatum): void {
-        this.updateBudge(
-            budgeName,
-            { rows: Object.assign([], this._state[budgeName].rows, {[rowIndex]: row}) }
-        );
+        const updatedRows = this._state.Budges[budgeName].rows.slice();
+        updatedRows[rowIndex] = row;
+        this.updateBudge(budgeName, { rows: updatedRows });
+    }
+
+    incrementLoadingCount(): void {
+        this._state.LoadingCount += 1;
+        console.log(this._state.LoadingCount);
+        this.notifyListeners();
+    }
+
+    decrementLoadingCount(): void {
+        this._state.LoadingCount -= 1;
+        console.log(this._state.LoadingCount);
+        this.notifyListeners();
     }
 
     subscribe(listener: ArdListener): void {
@@ -65,15 +74,17 @@ class Store {
     }
 
     private notifyListeners(): void {
-        localStorage.setItem('storeState', JSON.stringify(this._state));
-
+        localStorage.setItem('budges', JSON.stringify(this.getBudges()));
         this._listeners.forEach(listener => listener(this._state));
     }
 }
 
 export const store = new Store({
-    MyFirstBudge: {
-        name: 'MyFirstBudge',
-        rows: []
-    }
+    Budges: {
+        MyFirstBudge: {
+            name: 'MyFirstBudge',
+            rows: []
+        }
+    },
+    LoadingCount: 0
 });

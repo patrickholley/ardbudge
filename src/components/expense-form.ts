@@ -1,11 +1,14 @@
 import {store} from "@store";
 import {ArdBudgeDatum} from "@app-types/store";
-import render from "@utils/render";
+import ardRender from "@utils/ardRender";
+
+const componentTag = 'expense-form';
 
 class ExpenseForm extends HTMLElement {
     constructor() {
         super();
-        render(this);
+        this.componentTag = componentTag;
+        ardRender(this);
     }
 
     toggleOpen = (shouldBeOpen: boolean) => {
@@ -49,4 +52,4 @@ class ExpenseForm extends HTMLElement {
     }
 }
 
-customElements.define('expense-form', ExpenseForm);
+customElements.define(componentTag, ExpenseForm);

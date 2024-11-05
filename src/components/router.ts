@@ -2,14 +2,20 @@ import '@pages/budge-page.ts';
 import '@pages/landing-page.ts';
 import AppConstants from "@utils/appConstants";
 import {PageComponent, Path, Routes} from "@app-types/router";
+import {updateLoaderVisibility} from "@components/loading-widget";
+import {store} from "@store";
 
 class Router {
     private readonly _routes: Routes;
 
     constructor() {
         this._routes = AppConstants.Routes;
+
         window.addEventListener('popstate', this.handlePopState.bind(this));
         this.handlePopState();
+
+        updateLoaderVisibility();
+        store.subscribe(updateLoaderVisibility);
     }
 
     handlePopState(): void {

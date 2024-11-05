@@ -1,13 +1,15 @@
-import {store} from "@store";
+import { ArdListener } from "@app-types/store";
+import { store } from "@store";
 import pascalToSnake from "./pascalToSnake";
 import getFileStrings from "./getFileStrings";
 
-const render = (component: HTMLElement) => {
-    const componentId = pascalToSnake(component.constructor.name);
+const ardRender = (component: HTMLElement) => {
+    const componentId = pascalToSnake(component.componentTag || '');
+    store.incrementLoadingCount();
 
     try {
         getFileStrings(componentId).then((result) => {
-            const [templateString, stylesString] =  result;
+            const [templateString, stylesString] = result;
             const shadowRoot = component.attachShadow({ mode: 'open' });
 
             const range = document.createRange();
@@ -28,7 +30,7 @@ const render = (component: HTMLElement) => {
                 store.subscribe(component.onStoreUpdate);
 
                 component.disconnectedCallback = () => {
-                    store.unsubscribe(component.onStoreUpdate);
+                    store.unsubscribe(component.onStoreUpdate as ArdListener);
                 }
             }
 
@@ -36,7 +38,9 @@ const render = (component: HTMLElement) => {
         });
     } catch (error) {
         console.error(`Error rendering component ${componentId}:`, error);
+    } finally {
+        store.decrementLoadingCount();
     }
 }
 
-export default render;
+export default ardRender;

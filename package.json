@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:watch": "vite build --watch",
     "deploy": "cdk deploy",
     "preview": "vite preview",
     "validate:ts": "tsc --noEmit"

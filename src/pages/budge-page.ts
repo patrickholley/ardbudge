@@ -1,13 +1,16 @@
 import "@components/ard-budge.ts";
 import "@components/ard-table.ts";
 import "@components/expense-form.ts";
-import render from "@utils/render";
+import ardRender from "@utils/ardRender";
+
+const componentTag = "budge-page";
 
 class BudgePage extends HTMLElement {
     constructor() {
         super();
-        render(this);
+        this.componentTag = componentTag;
+        ardRender(this);
     }
 }
 
-customElements.define('budge-page', BudgePage);
+customElements.define(componentTag, BudgePage);

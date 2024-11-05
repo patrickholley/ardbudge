@@ -1,10 +1,13 @@
 import {store} from "@store";
-import render from "@utils/render";
+import ardRender from "@utils/ardRender";
+
+const componentTag = 'ard-table';
 
 class ArdTable extends HTMLElement {
     constructor() {
         super();
-        render(this);
+        this.componentTag = componentTag;
+        ardRender(this);
     }
 
     onRender = () => {
@@ -27,4 +30,4 @@ class ArdTable extends HTMLElement {
     }
 }
 
-customElements.define('ard-table', ArdTable);
+customElements.define(componentTag, ArdTable);

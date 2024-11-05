@@ -1,6 +1,3 @@
-/// <reference types="vite/client" />
-import {ArdState} from "@app-types/store";
-
 declare module '*.css' {
     const content: string;
     export default content;
@@ -11,4 +8,14 @@ interface HTMLElement {
     disconnectedCallback?(): void;
     onRender?(): void;
     onStoreUpdate?(state?: ArdState): void;
+    componentTag?: string;
+}
+
+interface ImportMetaEnv {
+    VITE_APP_VERSION: string;
+    MODE: string;
+}
+
+interface ImportMeta {
+    readonly env: ImportMetaEnv
 }

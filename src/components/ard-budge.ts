@@ -1,11 +1,14 @@
-import render from "@utils/render";
+import ardRender from "@utils/ardRender";
+
+const componentTag = 'ard-budge';
 
 class ArdBudge extends HTMLElement {
     _ardTable: HTMLElement | null = null;
 
     constructor() {
         super();
-        render(this);
+        this.componentTag = componentTag;
+        ardRender(this);
     }
 
     onAddExpense = () => {
@@ -23,4 +26,4 @@ class ArdBudge extends HTMLElement {
     }
 }
 
-customElements.define('ard-budge', ArdBudge);
+customElements.define(componentTag, ArdBudge);
