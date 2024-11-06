@@ -11,18 +11,17 @@ class ArdBudge extends HTMLElement {
         ardRender(this);
     }
 
-    onAddExpense = () => {
-        const openExpenseFormEvent = new CustomEvent('open-expense-form', {
+    openForm = () => {
+        const openFormEvent = new CustomEvent('open-form', {
             bubbles: true,
             composed: true
         });
 
-        this.dispatchEvent(openExpenseFormEvent);
+        this.dispatchEvent(openFormEvent);
     }
 
     onRender() {
-        const addExpenseButton = this.shadowRoot?.getElementById('add-expense');
-        addExpenseButton?.addEventListener('click', this.onAddExpense);
+        this.shadowRoot?.getElementById('add-expense')?.addEventListener('click', this.openForm);
     }
 }
 

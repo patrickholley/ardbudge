@@ -15,7 +15,7 @@ class ArdTable extends HTMLElement {
     }
 
     onStoreUpdate = () => {
-        const budgeData = store.getBudges().MyFirstBudge.rows;
+        /*const budgeData = store.getBudges().MyFirstBudge.rows;
         const tableBody = this.shadowRoot?.getElementById("ard-table__body");
 
         if (tableBody) {
@@ -26,7 +26,7 @@ class ArdTable extends HTMLElement {
                 <td>${datum.cost}</td>
             </tr>`
             )).join('');
-        }
+        }*/
     }
 }
 

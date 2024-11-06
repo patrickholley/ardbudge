@@ -9,6 +9,8 @@ interface HTMLElement {
     onRender?(): void;
     onStoreUpdate?(state?: ArdState): void;
     componentTag?: string;
+    formName?: string;
+    legend?: string;
 }
 
 interface ImportMetaEnv {

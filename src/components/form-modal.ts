@@ -1,19 +1,30 @@
 import {store} from "@store";
 import {ArdBudgeDatum} from "@app-types/store";
 import ardRender from "@utils/ardRender";
+import pascalToSnake from "@utils/pascalToSnake";
 
-const componentTag = 'expense-form';
+const componentTag = 'form-modal';
 
-class ExpenseForm extends HTMLElement {
+class FormModal extends HTMLElement {
     constructor() {
         super();
         this.componentTag = componentTag;
+        this.formName = this.getAttribute('formName') || '';
+        this.legend = this.getAttribute('legend') || '';
         ardRender(this);
     }
 
     toggleOpen = (shouldBeOpen: boolean) => {
-        const formModal = this.shadowRoot?.querySelector('#form-modal') as HTMLElement;
+        const formModal = this.shadowRoot?.querySelector('#modal-container') as HTMLElement;
         if (formModal) formModal.style.display = shouldBeOpen ? 'block' : 'none';
+    }
+
+    async getFieldset() {
+        if (this.formName) {
+            const templateString = await (await fetch(`/src/templates/${pascalToSnake(this.formName || '')}.html`)).text();
+            const fieldset = this.shadowRoot?.querySelector('#form-fieldset') as HTMLElement;
+            fieldset.innerHTML = templateString;
+        }
     }
 
     checkFormValidity = () => {
@@ -42,14 +53,20 @@ class ExpenseForm extends HTMLElement {
         this.toggleOpen(false);
     }
 
-    onRender() {
-        document.addEventListener('open-expense-form', () => this.toggleOpen(true));
+    async onRender() {
+        store.incrementLoadingCount();
+
+        await this.getFieldset();
+        document.addEventListener('open-form', () => this.toggleOpen(true));
+
         this.shadowRoot?.querySelector('form')?.addEventListener('submit', this.onSubmit);
         this.shadowRoot?.querySelector('#button__cancel')
             ?.addEventListener('click', () => this.toggleOpen(false));
         this.shadowRoot?.querySelectorAll('input')
             ?.forEach(input => input.addEventListener('input', this.checkFormValidity));
+
+        store.decrementLoadingCount();
     }
 }
 
-customElements.define(componentTag, ExpenseForm);
+customElements.define(componentTag, FormModal);

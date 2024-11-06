@@ -1,6 +1,6 @@
 import "@components/ard-budge.ts";
 import "@components/ard-table.ts";
-import "@components/expense-form.ts";
+import "@components/form-modal.ts";
 import ardRender from "@utils/ardRender";
 
 const componentTag = "budge-page";

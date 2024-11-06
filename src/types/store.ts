@@ -3,14 +3,13 @@ type ArdBudgeDatumProps = 'date' | 'description' | 'cost';
 export type ArdBudgeDatum = Record<ArdBudgeDatumProps, string>;
 
 export type ArdBudgeData = {
+    id: string;
     name: string;
     rows: ArdBudgeDatum[];
 }
 
-export type ArdBudges = Record<string, ArdBudgeData>;
-
 export type ArdState = {
-    Budges: ArdBudges;
+    Budges: ArdBudgeData[];
     LoadingCount: number;
 };
 

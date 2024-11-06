@@ -1,4 +1,5 @@
-import {ArdBudgeDatum, ArdBudges, ArdListener, ArdState} from '@app-types/store';
+import { v4 as uuidv4 } from 'uuid';
+import {ArdBudgeData, ArdBudgeDatum, ArdListener, ArdState} from '@app-types/store';
 
 class Store {
     private readonly _state: ArdState;
@@ -7,9 +8,10 @@ class Store {
     constructor(initialState: ArdState) {
         const localBudges = localStorage.getItem('budges');
         this._state = { ...initialState, ...(localBudges && { Budges: JSON.parse(localBudges) }) };
+        this.notifyListeners();
     }
 
-    getBudges(): ArdBudges {
+    getBudges(): ArdBudgeData[] {
         return this._state.Budges;
     }
 
@@ -17,51 +19,61 @@ class Store {
         return this._state.LoadingCount;
     }
 
-    addBudge(budgeName: string): void {
-        if (!this._state.Budges[budgeName]) {
-            this._state.Budges[budgeName] = {
+    addBudge(budgeName: string): boolean {
+        if (!this._state.Budges.find(b => b.name === budgeName)) {
+            this._state.Budges.push({
+                id: uuidv4(),
                 name: budgeName,
                 rows: []
-            };
+            });
+
+            this.notifyListeners();
+            return true;
         } else {
             alert(`Budge already exists with name: ${budgeName} - please choose another name!`);
+            return false;
         }
-
-        this.notifyListeners();
     }
 
-    private updateBudge(budgeName: string, updates: { name?: string; rows?: ArdBudgeDatum[] }): void {
-        this._state.Budges[budgeName] = {
-            ...this._state.Budges[budgeName],
-            ...updates
-        };
+    /*private updateBudge(budgeId: string, updates: Partial<ArdBudges[number]>): void {
+        const budge = this._state.Budges.find(b => b.id === budgeId);
+        if (budge) {
+            Object.assign(budge, updates);
+            this.notifyListeners();
+        }
+    }*/
 
-        this.notifyListeners();
+    addRow(budgeId: string, row: ArdBudgeDatum): void {
+        const budge = this._state.Budges.find(b => b.id === budgeId);
+        if (budge) {
+            budge.rows.push(row);
+            this.notifyListeners();
+        }
     }
 
-    addRow(budgeName: string, row: ArdBudgeDatum): void {
-        this.updateBudge(budgeName, { rows: [...this._state.Budges[budgeName].rows, row] });
+    deleteRow(budgeId: string, rowIndex: number): void {
+        const budge = this._state.Budges.find(b => b.id === budgeId);
+        if (budge) {
+            budge.rows.splice(rowIndex, 1);
+            this.notifyListeners();
+        }
     }
 
-    deleteRow(budgeName: string, rowIndex: number): void {
-        this.updateBudge(budgeName, { rows: this._state.Budges[budgeName].rows.slice(0, rowIndex).concat(this._state.Budges[budgeName].rows.slice(rowIndex + 1)) });
-    }
-
-    editRow(budgeName: string, rowIndex: number, row: ArdBudgeDatum): void {
-        const updatedRows = this._state.Budges[budgeName].rows.slice();
-        updatedRows[rowIndex] = row;
-        this.updateBudge(budgeName, { rows: updatedRows });
+    editRow(budgeId: string, rowIndex: number, row: ArdBudgeDatum): void {
+        const budge = this._state.Budges.find(b => b.id === budgeId);
+        if (budge) {
+            budge.rows[rowIndex] = row;
+            this.notifyListeners();
+        }
     }
 
     incrementLoadingCount(): void {
         this._state.LoadingCount += 1;
-        console.log(this._state.LoadingCount);
         this.notifyListeners();
     }
 
     decrementLoadingCount(): void {
         this._state.LoadingCount -= 1;
-        console.log(this._state.LoadingCount);
         this.notifyListeners();
     }
 
@@ -80,11 +92,6 @@ class Store {
 }
 
 export const store = new Store({
-    Budges: {
-        MyFirstBudge: {
-            name: 'MyFirstBudge',
-            rows: []
-        }
-    },
+    Budges: [],
     LoadingCount: 0
 });
