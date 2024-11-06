@@ -1,4 +1,4 @@
-import {store} from "@store";
+//import {store} from "@store";
 import ardRender from "@utils/ardRender";
 
 const componentTag = 'ard-table';

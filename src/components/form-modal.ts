@@ -21,7 +21,7 @@ class FormModal extends HTMLElement {
 
     async getFieldset() {
         if (this.formName) {
-            const templateString = await (await fetch(`/src/templates/${pascalToSnake(this.formName || '')}.html`)).text();
+            const templateString = (await import(`../templates/${pascalToSnake(this.formName || '')}.html?raw`)).default;
             const fieldset = this.shadowRoot?.querySelector('#form-fieldset') as HTMLElement;
             fieldset.innerHTML = templateString;
         }
