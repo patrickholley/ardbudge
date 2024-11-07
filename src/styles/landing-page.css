@@ -3,3 +3,7 @@
 #landing-container {
     @mixin flex-center;
 }
+
+button {
+    @mixin button-primary;
+}

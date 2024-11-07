@@ -15,6 +15,10 @@ class Store {
         return this._state.Budges;
     }
 
+    getBudge(budgeId: string): ArdBudgeData | undefined {
+        return this._state.Budges.find(b => b.id === budgeId);
+    }
+
     getLoadingCount(): number {
         return this._state.LoadingCount;
     }
@@ -34,14 +38,6 @@ class Store {
             return false;
         }
     }
-
-    /*private updateBudge(budgeId: string, updates: Partial<ArdBudges[number]>): void {
-        const budge = this._state.Budges.find(b => b.id === budgeId);
-        if (budge) {
-            Object.assign(budge, updates);
-            this.notifyListeners();
-        }
-    }*/
 
     addRow(budgeId: string, row: ArdBudgeDatum): void {
         const budge = this._state.Budges.find(b => b.id === budgeId);

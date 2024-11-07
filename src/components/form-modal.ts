@@ -1,5 +1,3 @@
-import {store} from "@store";
-import {ArdBudgeDatum} from "@app-types/store";
 import ardRender from "@utils/ardRender";
 import pascalToSnake from "@utils/pascalToSnake";
 
@@ -39,23 +37,17 @@ class FormModal extends HTMLElement {
     onSubmit = (e: SubmitEvent) => {
         e.preventDefault();
 
-        const formEntries = Object.fromEntries(
-            new FormData(e.target as HTMLFormElement).entries()
-        ) as unknown as ArdBudgeDatum;
+        const submitFormEvent = new CustomEvent('submit-form', {
+            bubbles: true,
+            composed: true,
+            detail: new FormData(e.target as HTMLFormElement)
+        });
 
-        formEntries.cost = parseFloat(formEntries.cost).toFixed(2);
-
-        store.addRow(
-            'MyFirstBudge',
-            formEntries
-        );
-
+        this.dispatchEvent(submitFormEvent);
         this.toggleOpen(false);
     }
 
     async onRender() {
-        store.incrementLoadingCount();
-
         await this.getFieldset();
         document.addEventListener('open-form', () => this.toggleOpen(true));
 
@@ -64,8 +56,6 @@ class FormModal extends HTMLElement {
             ?.addEventListener('click', () => this.toggleOpen(false));
         this.shadowRoot?.querySelectorAll('input')
             ?.forEach(input => input.addEventListener('input', this.checkFormValidity));
-
-        store.decrementLoadingCount();
     }
 }
 

@@ -3,6 +3,7 @@ declare module '*.css' {
     export default content;
 }
 
+// TODO: See about splitting these if possible, maybe extending the classes instead
 interface HTMLElement {
     connectedCallback?(): void;
     disconnectedCallback?(): void;
@@ -11,6 +12,8 @@ interface HTMLElement {
     componentTag?: string;
     formName?: string;
     legend?: string;
+    budgeId?: string;
+    budgeName?: string;
 }
 
 interface ImportMetaEnv {

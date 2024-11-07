@@ -1,4 +1,6 @@
 import ardRender from "@utils/ardRender";
+import {store} from "@store";
+import {getBudgeId} from "@utils/getBudgeId";
 
 const componentTag = 'ard-budge';
 
@@ -8,6 +10,7 @@ class ArdBudge extends HTMLElement {
     constructor() {
         super();
         this.componentTag = componentTag;
+        this.budgeName = store.getBudge(getBudgeId())?.name;
         ardRender(this);
     }
 
@@ -22,6 +25,8 @@ class ArdBudge extends HTMLElement {
 
     onRender() {
         this.shadowRoot?.getElementById('add-expense')?.addEventListener('click', this.openForm);
+        const budgeNameHeader = this.shadowRoot?.getElementById('budge-name');
+        if (budgeNameHeader) budgeNameHeader.innerHTML = this.budgeName || '';
     }
 }
 
