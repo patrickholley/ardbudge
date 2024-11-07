@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
 import {ArdBudgeData, ArdBudgeDatum, ArdListener, ArdState} from '@app-types/store';
+import generateBudgeId from "@utils/generateBudgeId";
 
 class Store {
     private readonly _state: ArdState;
@@ -26,7 +26,7 @@ class Store {
     addBudge(budgeName: string): boolean {
         if (!this._state.Budges.find(b => b.name === budgeName)) {
             this._state.Budges.push({
-                id: uuidv4(),
+                id: generateBudgeId(),
                 name: budgeName,
                 rows: []
             });
