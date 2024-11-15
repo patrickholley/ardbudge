@@ -1,16 +1,16 @@
 import ardRender from "@utils/ardRender";
 import {store} from "@store";
-import {getBudgeId} from "@utils/getBudgeId";
+import {getBudgetId} from "@utils/getBudgetId";
 
-const componentTag = 'ard-budge';
+const componentTag = 'ard-budget';
 
-class ArdBudge extends HTMLElement {
-    _ardTable: HTMLElement | null = null;
+class Budget extends HTMLElement {
+    _table: HTMLElement | null = null;
 
     constructor() {
         super();
         this.componentTag = componentTag;
-        this.budgeName = store.getBudge(getBudgeId())?.name;
+        this.budgetName = store.getBudget(getBudgetId())?.name;
         ardRender(this);
     }
 
@@ -25,9 +25,9 @@ class ArdBudge extends HTMLElement {
 
     onRender() {
         this.shadowRoot?.getElementById('add-expense')?.addEventListener('click', this.openForm);
-        const budgeNameHeader = this.shadowRoot?.getElementById('budge-name');
-        if (budgeNameHeader) budgeNameHeader.innerHTML = this.budgeName || '';
+        const budgetNameHeader = this.shadowRoot?.getElementById('budget-name');
+        if (budgetNameHeader) budgetNameHeader.innerHTML = this.budgetName || '';
     }
 }
 
-customElements.define(componentTag, ArdBudge);
+customElements.define(componentTag, Budget);

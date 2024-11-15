@@ -12,8 +12,8 @@ interface HTMLElement {
     componentTag?: string;
     formName?: string;
     legend?: string;
-    budgeId?: string;
-    budgeName?: string;
+    budgetId?: string;
+    budgetName?: string;
 }
 
 interface ImportMetaEnv {

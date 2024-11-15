@@ -1,11 +1,11 @@
-import "@components/ard-budge.ts";
-import "@components/ard-table.ts";
+import "@components/budget.ts";
+import "@components/table.ts";
 import "@components/form-modal.ts";
 import ardRender from "@utils/ardRender";
 
-const componentTag = "budge-page";
+const componentTag = "budget-page";
 
-class BudgePage extends HTMLElement {
+class BudgetPage extends HTMLElement {
     constructor() {
         super();
         this.componentTag = componentTag;
@@ -13,4 +13,4 @@ class BudgePage extends HTMLElement {
     }
 }
 
-customElements.define(componentTag, BudgePage);
+customElements.define(componentTag, BudgetPage);

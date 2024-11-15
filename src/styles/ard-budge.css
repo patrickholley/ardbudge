@@ -1,6 +1,6 @@
 @import "./mixins.css";
 
-#ard-budge {
+#ard-budget {
     display: flex;
     flex-direction: column;
     align-items: center;

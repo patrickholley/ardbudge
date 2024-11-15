@@ -1,16 +1,16 @@
-type ArdBudgeDatumProps = 'date' | 'description' | 'cost';
+type BudgetDatumProps = 'date' | 'description' | 'cost';
 
-export type ArdBudgeDatum = Record<ArdBudgeDatumProps, string>;
+export type BudgetDatum = Record<BudgetDatumProps, string>;
 
-export type ArdBudgeData = {
+export type BudgetData = {
     id: string;
     name: string;
-    rows: ArdBudgeDatum[];
+    rows: BudgetDatum[];
 }
 
-export type ArdState = {
-    Budges: ArdBudgeData[];
+export type StoreState = {
+    Budgets: BudgetData[];
     LoadingCount: number;
 };
 
-export type ArdListener = (state?: ArdState) => void;
+export type StoreListener = (state?: StoreState) => void;

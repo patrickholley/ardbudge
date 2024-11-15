@@ -1,64 +1,64 @@
-import {ArdBudgeData, ArdBudgeDatum, ArdListener, ArdState} from '@app-types/store';
-import generateBudgeId from "@utils/generateBudgeId";
+import {BudgetData, BudgetDatum, StoreListener, StoreState} from '@app-types/store';
+import generateBudgetId from "@utils/generateBudgetId";
 
 class Store {
-    private readonly _state: ArdState;
-    private _listeners: ArdListener[] = [];
+    private readonly _state: StoreState;
+    private _listeners: StoreListener[] = [];
 
-    constructor(initialState: ArdState) {
-        const localBudges = localStorage.getItem('budges');
-        this._state = { ...initialState, ...(localBudges && { Budges: JSON.parse(localBudges) }) };
+    constructor(initialState: StoreState) {
+        const localBudgets = localStorage.getItem('budgets');
+        this._state = { ...initialState, ...(localBudgets && { Budgets: JSON.parse(localBudgets) }) };
         this.notifyListeners();
     }
 
-    getBudges(): ArdBudgeData[] {
-        return this._state.Budges;
+    getBudgets(): BudgetData[] {
+        return this._state.Budgets;
     }
 
-    getBudge(budgeId: string): ArdBudgeData | undefined {
-        return this._state.Budges.find(b => b.id === budgeId);
+    getBudget(budgetId: string): BudgetData | undefined {
+        return this._state.Budgets.find(b => b.id === budgetId);
     }
 
     getLoadingCount(): number {
         return this._state.LoadingCount;
     }
 
-    addBudge(budgeName: string): boolean {
-        if (!this._state.Budges.find(b => b.name === budgeName)) {
-            this._state.Budges.push({
-                id: generateBudgeId(),
-                name: budgeName,
+    addBudget(budgetName: string): boolean {
+        if (!this._state.Budgets.find(b => b.name === budgetName)) {
+            this._state.Budgets.push({
+                id: generateBudgetId(),
+                name: budgetName,
                 rows: []
             });
 
             this.notifyListeners();
             return true;
         } else {
-            alert(`Budge already exists with name: ${budgeName} - please choose another name!`);
+            alert(`Budget already exists with name: ${budgetName} - please choose another name!`);
             return false;
         }
     }
 
-    addRow(budgeId: string, row: ArdBudgeDatum): void {
-        const budge = this._state.Budges.find(b => b.id === budgeId);
-        if (budge) {
-            budge.rows.push(row);
+    addRow(budgetId: string, row: BudgetDatum): void {
+        const budget = this._state.Budgets.find(b => b.id === budgetId);
+        if (budget) {
+            budget.rows.push(row);
             this.notifyListeners();
         }
     }
 
-    deleteRow(budgeId: string, rowIndex: number): void {
-        const budge = this._state.Budges.find(b => b.id === budgeId);
-        if (budge) {
-            budge.rows.splice(rowIndex, 1);
+    deleteRow(budgetId: string, rowIndex: number): void {
+        const budget = this._state.Budgets.find(b => b.id === budgetId);
+        if (budget) {
+            budget.rows.splice(rowIndex, 1);
             this.notifyListeners();
         }
     }
 
-    editRow(budgeId: string, rowIndex: number, row: ArdBudgeDatum): void {
-        const budge = this._state.Budges.find(b => b.id === budgeId);
-        if (budge) {
-            budge.rows[rowIndex] = row;
+    editRow(budgetId: string, rowIndex: number, row: BudgetDatum): void {
+        const budget = this._state.Budgets.find(b => b.id === budgetId);
+        if (budget) {
+            budget.rows[rowIndex] = row;
             this.notifyListeners();
         }
     }
@@ -73,21 +73,21 @@ class Store {
         this.notifyListeners();
     }
 
-    subscribe(listener: ArdListener): void {
+    subscribe(listener: StoreListener): void {
         this._listeners.push(listener);
     }
 
-    unsubscribe(listener: ArdListener): void {
+    unsubscribe(listener: StoreListener): void {
         this._listeners = this._listeners.filter(l => l !== listener);
     }
 
     private notifyListeners(): void {
-        localStorage.setItem('budges', JSON.stringify(this.getBudges()));
+        localStorage.setItem('budgets', JSON.stringify(this.getBudgets()));
         this._listeners.forEach(listener => listener(this._state));
     }
 }
 
 export const store = new Store({
-    Budges: [],
+    Budgets: [],
     LoadingCount: 0
 });

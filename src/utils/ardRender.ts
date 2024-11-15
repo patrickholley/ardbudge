@@ -1,4 +1,4 @@
-import { ArdListener } from "@app-types/store";
+import { StoreListener } from "@app-types/store";
 import { store } from "@store";
 import pascalToSnake from "./pascalToSnake";
 import getFileStrings from "./getFileStrings";
@@ -32,7 +32,7 @@ const ardRender = (component: HTMLElement) => {
                 store.subscribe(component.onStoreUpdate);
 
                 component.disconnectedCallback = () => {
-                    store.unsubscribe(component.onStoreUpdate as ArdListener);
+                    store.unsubscribe(component.onStoreUpdate as StoreListener);
                 }
             }
 

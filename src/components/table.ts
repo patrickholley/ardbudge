@@ -1,16 +1,16 @@
 //import {store} from "@store";
 import ardRender from "@utils/ardRender";
-import {getBudgeId} from "@utils/getBudgeId";
+import {getBudgetId} from "@utils/getBudgetId";
 import {store} from "@store";
-import {ArdBudgeDatum} from "@app-types/store";
+import {BudgetDatum} from "@app-types/store";
 
 const componentTag = 'ard-table';
 
-class ArdTable extends HTMLElement {
+class Table extends HTMLElement {
     constructor() {
         super();
         this.componentTag = componentTag;
-        this.budgeId = getBudgeId();
+        this.budgetId = getBudgetId();
         ardRender(this);
     }
 
@@ -20,22 +20,22 @@ class ArdTable extends HTMLElement {
     }
 
     onFormSubmit = (formData: FormData) => {
-        const formEntries = Object.fromEntries(formData.entries()) as unknown as ArdBudgeDatum;
+        const formEntries = Object.fromEntries(formData.entries()) as unknown as BudgetDatum;
         formEntries.cost = parseFloat(formEntries.cost).toFixed(2);
 
         store.addRow(
-            this.budgeId || '',
+            this.budgetId || '',
             formEntries
         );
     }
 
     onStoreUpdate = () => {
-        const budgeData = store.getBudge(this.budgeId || '');
-        if (budgeData) {
+        const budgetData = store.getBudget(this.budgetId || '');
+        if (budgetData) {
             const tableBody = this.shadowRoot?.getElementById("ard-table__body");
 
             if (tableBody) {
-                tableBody.innerHTML = budgeData.rows.map(datum => (
+                tableBody.innerHTML = budgetData.rows.map(datum => (
                     `<tr>
                 <td>${datum.date}</td>
                 <td>${datum.description}</td>
@@ -47,4 +47,4 @@ class ArdTable extends HTMLElement {
     }
 }
 
-customElements.define(componentTag, ArdTable);
+customElements.define(componentTag, Table);

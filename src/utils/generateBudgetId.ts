@@ -1,4 +1,4 @@
-const generateBudgeId = (): string => {
+const generateBudgetId = (): string => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     const charactersLength = characters.length;
@@ -8,4 +8,4 @@ const generateBudgeId = (): string => {
     return result;
 }
 
-export default generateBudgeId;
+export default generateBudgetId;

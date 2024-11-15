@@ -1,6 +1,6 @@
 {
-  "name": "Ardbudge",
-  "short_name": "Ardbudge",
+  "name": "ArdFudge",
+  "short_name": "ArdFudge",
   "description": "A basic budget app for the citizens of Ardmore",
   "start_url": "/",
   "display": "standalone",

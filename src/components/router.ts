@@ -1,4 +1,4 @@
-import '@pages/budge-page.ts';
+import '@pages/budget-page.ts';
 import '@pages/landing-page.ts';
 import AppConstants from "@utils/appConstants";
 import {PageComponent, Path, Routes} from "@app-types/router";

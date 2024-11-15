@@ -22,33 +22,33 @@ class LandingPage extends HTMLElement {
     onFormSubmit = (formData: FormData) => {
         const name = formData.get('name');
 
-        if (typeof name === 'string') store.addBudge(name);
-        this.renderBudgeList();
+        if (typeof name === 'string') store.addBudget(name);
+        this.renderBudgetList();
     }
 
-    renderBudgeList() {
-        const budgeList = this.shadowRoot?.getElementById('budge-list');
-        if (budgeList) {
-            budgeList.innerHTML = '';
-            const budges = store.getBudges();
+    renderBudgetList() {
+        const budgetList = this.shadowRoot?.getElementById('budget-list');
+        if (budgetList) {
+            budgetList.innerHTML = '';
+            const budgets = store.getBudgets();
 
-            budges.forEach((budge) => {
+            budgets.forEach((budget) => {
                 const listItem = document.createElement('li');
                 const link = document.createElement('a');
 
-                link.href = `/budge/${budge.id}`;
-                link.textContent = budge.name;
+                link.href = `/budget/${budget.id}`;
+                link.textContent = budget.name;
 
                 listItem.appendChild(link);
-                budgeList.appendChild(listItem);
+                budgetList.appendChild(listItem);
             });
         }
     }
 
     onRender() {
-        this.shadowRoot?.getElementById('create-budge')?.addEventListener('click', this.openForm);
+        this.shadowRoot?.getElementById('create-budget')?.addEventListener('click', this.openForm);
         document.addEventListener('submit-form', e => this.onFormSubmit((e as CustomEvent).detail));
-        this.renderBudgeList();
+        this.renderBudgetList();
     }
 }
 
