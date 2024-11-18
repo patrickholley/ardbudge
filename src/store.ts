@@ -1,4 +1,4 @@
-import {BudgetData, BudgetDatum, StoreListener, StoreState} from '@app-types/store';
+import {BudgetProps, Expense, StoreListener, StoreState} from '@app-types/store';
 import generateBudgetId from "@utils/generateBudgetId";
 
 class Store {
@@ -11,11 +11,11 @@ class Store {
         this.notifyListeners();
     }
 
-    getBudgets(): BudgetData[] {
+    getBudgets(): BudgetProps[] {
         return this._state.Budgets;
     }
 
-    getBudget(budgetId: string): BudgetData | undefined {
+    getBudget(budgetId: string): BudgetProps | undefined {
         return this._state.Budgets.find(b => b.id === budgetId);
     }
 
@@ -39,7 +39,7 @@ class Store {
         }
     }
 
-    addRow(budgetId: string, row: BudgetDatum): void {
+    addRow(budgetId: string, row: Expense): void {
         const budget = this._state.Budgets.find(b => b.id === budgetId);
         if (budget) {
             budget.rows.push(row);
@@ -55,7 +55,7 @@ class Store {
         }
     }
 
-    editRow(budgetId: string, rowIndex: number, row: BudgetDatum): void {
+    editRow(budgetId: string, rowIndex: number, row: Expense): void {
         const budget = this._state.Budgets.find(b => b.id === budgetId);
         if (budget) {
             budget.rows[rowIndex] = row;

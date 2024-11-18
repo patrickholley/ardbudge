@@ -1,15 +1,22 @@
-type BudgetDatumProps = 'date' | 'description' | 'cost';
+enum ExpenseProps {
+    Date = 'date',
+    Description = 'description',
+    Cost = 'cost',
+}
 
-export type BudgetDatum = Record<BudgetDatumProps, string>;
+export type Expense = Record<ExpenseProps, string> & {
+    id: string;
+    budgetId: string;
+};
 
-export type BudgetData = {
+export type BudgetProps = {
     id: string;
     name: string;
-    rows: BudgetDatum[];
+    rows: Expense[];
 }
 
 export type StoreState = {
-    Budgets: BudgetData[];
+    Budgets: BudgetProps[];
     LoadingCount: number;
 };
 

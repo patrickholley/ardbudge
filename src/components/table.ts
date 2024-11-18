@@ -2,7 +2,7 @@
 import ardRender from "@utils/ardRender";
 import {getBudgetId} from "@utils/getBudgetId";
 import {store} from "@store";
-import {BudgetDatum} from "@app-types/store";
+import {Expense} from "@app-types/store";
 
 const componentTag = 'ard-table';
 
@@ -20,7 +20,7 @@ class Table extends HTMLElement {
     }
 
     onFormSubmit = (formData: FormData) => {
-        const formEntries = Object.fromEntries(formData.entries()) as unknown as BudgetDatum;
+        const formEntries = Object.fromEntries(formData.entries()) as unknown as Expense;
         formEntries.cost = parseFloat(formEntries.cost).toFixed(2);
 
         store.addRow(
