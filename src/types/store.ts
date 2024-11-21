@@ -1,23 +1,18 @@
-enum ExpenseProps {
-    Date = 'date',
-    Description = 'description',
-    Cost = 'cost',
-}
-
-export type Expense = Record<ExpenseProps, string> & {
-    id: string;
-    budgetId: string;
-};
-
-export type BudgetProps = {
-    id: string;
-    name: string;
-    rows: Expense[];
-}
+import {Budget, Expense, User} from "./services.ts";
 
 export type StoreState = {
-    Budgets: BudgetProps[];
-    LoadingCount: number;
+    budgets: Budget[],
+    expenses: Expense[],
+    currentBudget: Budget | null,
+    currentExpense: Expense | null,
+    currentUser: User | null,
+    loadingCount: number
 };
 
 export type StoreListener = (state?: StoreState) => void;
+
+export interface EntityWithId {
+    id: string;
+}
+
+export type CreateFunction<T> = (parentId: string, entity: T) => Promise<T>;
