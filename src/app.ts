@@ -1,4 +1,7 @@
 import "@components/router";
+import '@pages/budget-page.ts';
+import '@pages/landing-page.ts';
+import '@pages/login-page.ts';
 
 const { MODE, VITE_APP_VERSION } = import.meta.env;
 

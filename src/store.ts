@@ -25,6 +25,10 @@ class Store {
         this.notifyListeners();
     }
 
+    getState = (): StoreState => {
+        return this._state;
+    }
+
     // General methods
     getLoadingCount = (): number => {
         return this._state.loadingCount;
@@ -59,14 +63,15 @@ class Store {
         this.notifyListeners();
     }
 
-    // Consolidated methods for User, Budget, and Expense
     private getEntity = async <T>(
         key: keyof StoreState,
         fetchFunc: (id: string) => Promise<T>,
         entityId: string
     ): Promise<void> => {
         await this.handleRequest(async () => {
-            (this._state[key] as T) = await fetchFunc(entityId);
+            console.log(key, fetchFunc, entityId);
+            await fetchFunc(entityId);
+            //(this._state[key] as T) = await fetchFunc(entityId);
         });
     }
 
@@ -110,9 +115,7 @@ class Store {
     }
 
     // User methods
-    getCurrentUserId = (): string => {
-        return this._state.currentUser?.id || '';
-    }
+    getCurrentUserId = (): string => this._state.currentUser?.id || '';
 
     getUser = async (userId: string): Promise<void> => {
         await this.getEntity('currentUser', this.userService.getUser, userId);

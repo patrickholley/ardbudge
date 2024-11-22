@@ -2,12 +2,16 @@ class BaseService {
     private readonly baseURL: string;
 
     constructor(baseURLSuffix: string) {
-        this.baseURL = (process.env.DATABASE_URL || '') + baseURLSuffix;
+        this.baseURL = (import.meta.env.VITE_DATABASE_URL || '') + baseURLSuffix;
+        console.log(this.baseURL, import.meta.env.VITE_DATABASE_URL);
     }
 
     protected async get<T>(url: string, params?: Record<string, string>): Promise<T> {
+        console.log(url, params);
         const queryString = params ? '?' + new URLSearchParams(params).toString() : '';
+        console.log(queryString);
         const response = await fetch(`${this.baseURL}${url}${queryString}`);
+        console.log(response);
         return this.handleResponse<T>(response);
     }
 

@@ -16,7 +16,9 @@ interface HTMLElement {
     budgetName?: string;
 }
 
+// Remember VITE prefix
 interface ImportMetaEnv {
+    VITE_DATABASE_URL: string;
     VITE_APP_VERSION: string;
     MODE: string;
 }

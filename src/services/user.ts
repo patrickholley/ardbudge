@@ -6,8 +6,9 @@ class UserService extends BaseService {
         super(`/users`);
     }
 
-    public getUser = async (userId: string): Promise<User> =>
-        this.get(`/${userId}`);
+    public getUser = async (userId: string): Promise<User> => {
+        return this.get(`/${userId}`);
+    }
 
     public createUser = async (userData: User): Promise<User> =>
         this.post(`/`, userData);

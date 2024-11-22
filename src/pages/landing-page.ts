@@ -19,18 +19,18 @@ class LandingPage extends HTMLElement {
         this.dispatchEvent(openFormEvent);
     }
 
-    onFormSubmit = (formData: FormData) => {
+    /*onFormSubmit = (formData: FormData) => {
         const name = formData.get('name');
 
         if (typeof name === 'string') store.addBudget(name);
         this.renderBudgetList();
-    }
+    }*/
 
-    renderBudgetList() {
+    /*async renderBudgetList() {
         const budgetList = this.shadowRoot?.getElementById('budget-list');
         if (budgetList) {
             budgetList.innerHTML = '';
-            const budgets = store.getBudgets();
+            const budgets = await store.getBudgets();
 
             budgets.forEach((budget) => {
                 const listItem = document.createElement('li');
@@ -43,12 +43,12 @@ class LandingPage extends HTMLElement {
                 budgetList.appendChild(listItem);
             });
         }
-    }
+    }*/
 
     onRender() {
         this.shadowRoot?.getElementById('create-budget')?.addEventListener('click', this.openForm);
-        document.addEventListener('submit-form', e => this.onFormSubmit((e as CustomEvent).detail));
-        this.renderBudgetList();
+        //document.addEventListener('submit-form', e => this.onFormSubmit((e as CustomEvent).detail));
+        //this.renderBudgetList();
     }
 }
 

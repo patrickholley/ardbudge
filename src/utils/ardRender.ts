@@ -3,10 +3,23 @@ import { store } from "@store";
 import pascalToSnake from "./pascalToSnake";
 import getFileStrings from "./getFileStrings";
 import router from "@components/router";
+import {Paths} from "@app-types/router";
 
 const ardRender = (component: HTMLElement) => {
     const componentId = pascalToSnake(component.componentTag || '');
     store.incrementLoadingCount();
+    const { currentUser } = store.getState();
+
+    console.log('1');
+
+    if (!currentUser && router.getCurrentRoute() !== Paths.Login) {
+        router.navigate(Paths.Login);
+        store.decrementLoadingCount();
+        return;
+    }
+
+    console.log('2');
+
 
     try {
         getFileStrings(componentId).then((result) => {

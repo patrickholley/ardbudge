@@ -1,7 +1,5 @@
-import '@pages/budget-page.ts';
-import '@pages/landing-page.ts';
 import AppConstants from "@utils/appConstants";
-import {PageComponent, Path, Routes} from "@app-types/router";
+import {PageComponent, Path, Paths, Routes} from "@app-types/router";
 import {updateLoaderVisibility} from "@components/loading-widget";
 import {store} from "@store";
 
@@ -20,21 +18,7 @@ class Router {
         store.subscribe(updateLoaderVisibility);
     }
 
-    navigate(path: string): void {
-        window.history.pushState({}, '', path);
-        router.handlePopState();
-    }
-
-    rewireAnchors (shadowRoot: ShadowRoot) {
-        shadowRoot.querySelectorAll('a').forEach((link) => {
-            link.addEventListener('click', (event: Event) => {
-                event.preventDefault();
-                const target = event.currentTarget as HTMLAnchorElement;
-                const href = target.getAttribute('href');
-                if (href) router.navigate(href);
-            });
-        });
-    }
+    getCurrentRoute = () => window.location.pathname;
 
     handlePopState(): void {
         const { pathname } = window.location;
@@ -69,6 +53,22 @@ class Router {
 
         const appEl = document.getElementById("app");
         if (appEl) appEl.innerHTML = `<${route} />`;
+    }
+
+    navigate(path: string): void {
+        window.history.pushState({}, '', path);
+        router.handlePopState();
+    }
+
+    rewireAnchors (shadowRoot: ShadowRoot) {
+        shadowRoot.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', (event: Event) => {
+                event.preventDefault();
+                const target = event.currentTarget as HTMLAnchorElement;
+                const href = target.getAttribute('href');
+                if (href) router.navigate(href);
+            });
+        });
     }
 }
 
