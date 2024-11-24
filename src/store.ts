@@ -1,6 +1,7 @@
-import {CreateFunction, EntityWithId, StoreListener, StoreState} from '@app-types/store';
+import { CreateFunction, EntityWithId, StoreListener, StoreState } from '@app-types/store';
 import { BudgetService, ExpenseService, UserService } from './services';
-import {Budget, Expense, NewUser} from "@app-types/services.ts";
+import { Budget, Expense, NewUser } from "@app-types/services.ts";
+import router from "@components/router";
 
 class Store {
     private readonly _state: StoreState = {
@@ -57,10 +58,13 @@ class Store {
     }
 
     private handleRequest = async (callback: () => Promise<void>): Promise<void> => {
-        this.incrementLoadingCount();
-        await callback();
-        this.decrementLoadingCount();
-        this.notifyListeners();
+        try {
+            this.incrementLoadingCount();
+            await callback();
+            this.notifyListeners();
+        } finally {
+            this.decrementLoadingCount();
+        }
     }
 
     private getEntity = async <T>(
@@ -69,9 +73,19 @@ class Store {
         entityId: string
     ): Promise<void> => {
         await this.handleRequest(async () => {
-            console.log(key, fetchFunc, entityId);
-            await fetchFunc(entityId);
-            //(this._state[key] as T) = await fetchFunc(entityId);
+            const entity = await fetchFunc(entityId);
+            (this._state[key] as T[]) = entity as unknown as T[];
+        });
+    }
+
+    private getUniqueEntity = async <T>(
+        key: keyof StoreState,
+        fetchFunc: (id: string) => Promise<T>,
+        entityId: string
+    ): Promise<void> => {
+        await this.handleRequest(async () => {
+            const newEntity = await fetchFunc(entityId);
+            (this._state[key] as T) = newEntity as T;
         });
     }
 
@@ -84,6 +98,18 @@ class Store {
         await this.handleRequest(async () => {
             const newEntity = await createFunc(parentId, entity);
             (this._state[key] as T[]).push(newEntity);
+        });
+    }
+
+    private createUniqueEntity = async <T>(
+        key: keyof StoreState,
+        parentId: string,
+        entity: T,
+        createFunc: CreateFunction<T>
+    ): Promise<void> => {
+        await this.handleRequest(async () => {
+            const newEntity = await createFunc(parentId, entity);
+            (this._state[key] as T) = newEntity as T;
         });
     }
 
@@ -101,6 +127,18 @@ class Store {
         });
     }
 
+    private updateUniqueEntity = async <T>(
+        key: keyof StoreState,
+        entityId: string,
+        updatedData: T,
+        updateFunc: (id: string, updatedData: T) => Promise<T>
+    ): Promise<void> => {
+        await this.handleRequest(async () => {
+            const updatedEntity = await updateFunc(entityId, updatedData);
+            (this._state[key] as T) = updatedEntity as T;
+        });
+    }
+
     private deleteEntity = async <T>(
         key: keyof StoreState,
         entityId: string,
@@ -114,23 +152,44 @@ class Store {
         });
     }
 
+    private deleteUniqueEntity = async (
+        key: keyof StoreState,
+        entityId: string,
+        deleteFunc: (id: string) => Promise<void>
+    ): Promise<void> => {
+        await this.handleRequest(async () => {
+            await deleteFunc(entityId);
+            delete this._state[key];
+        });
+    }
+
     // User methods
     getCurrentUserId = (): string => this._state.currentUser?.id || '';
 
     getUser = async (username: string): Promise<void> => {
-        await this.getEntity('currentUser', this.userService.getUser, username);
+        try {
+            await this.getUniqueEntity('currentUser', this.userService.getUser, username);
+            router.navigate('/');
+        } catch {
+            alert('Username not found. Please try again or create a user instead.');
+        }
     }
 
     createUser = async (user: NewUser): Promise<void> => {
-        await this.createEntity('currentUser', '', user, this.userService.createUser as unknown as CreateFunction<NewUser>);
+        try {
+            await this.createUniqueEntity('currentUser', '', user, this.userService.createUser as unknown as CreateFunction<NewUser>);
+            router.navigate('/');
+        } catch (error) {
+            alert('Username already taken. Please choose another username.');
+        }
     }
 
     updateUser = async (userId: string, user: NewUser): Promise<void> => {
-        await this.updateEntity('currentUser', userId, user, this.userService.updateUser);
+        await this.updateUniqueEntity('currentUser', userId, user, this.userService.updateUser);
     }
 
     deleteUser = async (userId: string): Promise<void> => {
-        await this.deleteEntity('currentUser', userId, this.userService.deleteUser);
+        await this.deleteUniqueEntity('currentUser', userId, this.userService.deleteUser);
         this._state.currentUser = null;
     }
 
@@ -140,13 +199,11 @@ class Store {
     }
 
     getExpenses = async (): Promise<void> => {
-        await this.handleRequest(async () => {
-            this._state.expenses = await this.expenseService.getExpenses(this.getCurrentBudgetId());
-        });
+        await this.getEntity('expenses', this.expenseService.getExpenses, this.getCurrentBudgetId());
     }
 
     getExpense = async (expenseId: string): Promise<void> => {
-        await this.getEntity('currentExpense', this.expenseService.getExpense, expenseId);
+        await this.getUniqueEntity('currentExpense', this.expenseService.getExpense, expenseId);
     }
 
     createExpense = async (expense: Expense): Promise<void> => {
@@ -167,13 +224,11 @@ class Store {
     }
 
     getBudgets = async (): Promise<void> => {
-        await this.handleRequest(async () => {
-            this._state.budgets = await this.budgetService.getBudgets(this.getCurrentUserId());
-        });
+        await this.getEntity('budgets', this.budgetService.getBudgets, this.getCurrentUserId());
     }
 
     getBudget = async (budgetId: string): Promise<void> => {
-        await this.getEntity('currentBudget', this.budgetService.getBudget, budgetId);
+        await this.getUniqueEntity('currentBudget', this.budgetService.getBudget, budgetId);
     }
 
     createBudget = async (budget: Budget): Promise<void> => {

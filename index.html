@@ -8,6 +8,34 @@
     <title>ArdFudge</title>
     <link rel="stylesheet" href="./src/styles/index.css" />
     <style>
+      :root {
+        --sage-green: #b4cba0;
+        --wheat: #f5deb3;
+        --wisteria: #c9a0dc;
+        --dark-sage-green: #8ea883;
+        --dark-wheat: #d6b676;
+        --dark-wisteria: #a078b0;
+        --light-sage-green: #d4e2c4;
+        --light-wheat: #fff4d9;
+        --light-wisteria: #e4cffa;
+      }
+
+      @font-face {
+        font-family: 'Lunasima';
+        src: url('/fonts/Lunasima-Regular.ttf') format('truetype'),
+          url('/fonts/Lunasima-Bold.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      @font-face {
+        font-family: 'MoonDance';
+        src: url('/fonts/MoonDance-Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+
       html {
         background-color: darkseagreen;
         display: flex;
@@ -16,6 +44,7 @@
       }
 
       body {
+        font-family: 'Lunasima', sans-serif;
         margin: 0;
         width: 100vw;
         height: 100vh;

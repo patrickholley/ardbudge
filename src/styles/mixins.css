@@ -7,19 +7,14 @@
 
 @define-mixin button-style {
     min-height: 40px;
-    min-width: 100px;
+    min-width: 120px;
     max-width: 80%;
-    box-shadow: 0 2px white;
-    font-size: 1.25rem;
-    border: 3px solid white;
-    border-radius: 5px;
-    margin-bottom: 2px;
-
-    &:focus{
-        margin-top: 2px;
-        margin-bottom: 0;
-        box-shadow: none;
-    }
+    font-size: 1rem;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: 0.25s;
+    cursor: pointer;
 
     &:disabled {
         background-color: lightgray;
@@ -28,10 +23,58 @@
 
 @define-mixin button-primary {
     @mixin button-style;
-    background-color: wheat;
+    background-color: var(--wheat);
+
+    &:active {
+        background-color: var(--wheat);
+    }
+
+    &:hover {
+        background-color: var(--light-wheat);
+    }
 }
 
 @define-mixin button-secondary {
     @mixin button-style;
-    background-color: thistle;
+    background-color: var(--wisteria);
+
+    &:active {
+        background-color: var(--wisteria);
+    }
+
+    &:hover {
+        background-color: var(--dark-wisteria);
+    }
+}
+
+@define-mixin label-style {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+@define-mixin input-style {
+    width: calc(100% - 14px);
+    height: 16px;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 1rem;
+    transition: 0.25s;
+    outline: none;
+}
+
+@define-mixin input-primary {
+    @mixin input-style;
+
+    background-color: var(--wheat);
+    border-color: var(--wheat);
+
+    &:focus {
+        background-color: var(--light-wheat);
+    }
+}
+
+@define-mixin input-secondary {
+    @mixin input-style;
 }
