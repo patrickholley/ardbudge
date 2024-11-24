@@ -10,16 +10,21 @@ class LoginPage extends HTMLElement {
         ardRender(this);
     }
 
-    login = async () => {
-        const userId = (this.shadowRoot?.getElementById('userid') as HTMLInputElement).value;
-        if (userId) {
-            await store.getUser(userId);
-            console.log('logged in?');
+    loginOrCreateUser = async () => {
+        const name = (this.shadowRoot?.getElementById('username') as HTMLInputElement).value;
+        const isNewUser = (this.shadowRoot?.getElementById('new-user-toggle') as HTMLInputElement).checked;
+        if (name) {
+            if (isNewUser) {
+                await store.createUser({name});
+            }
+            else {
+                await store.getUser(name);
+            }
         }
     }
 
     onRender() {
-        this.shadowRoot?.getElementById('login-button')?.addEventListener('click', this.login);
+        this.shadowRoot?.getElementById('login-button')?.addEventListener('click', this.loginOrCreateUser);
         console.log(this.shadowRoot);
     }
 }

@@ -1,6 +1,6 @@
 import {CreateFunction, EntityWithId, StoreListener, StoreState} from '@app-types/store';
 import { BudgetService, ExpenseService, UserService } from './services';
-import { Budget, Expense, User } from "@app-types/services.ts";
+import {Budget, Expense, NewUser} from "@app-types/services.ts";
 
 class Store {
     private readonly _state: StoreState = {
@@ -117,15 +117,15 @@ class Store {
     // User methods
     getCurrentUserId = (): string => this._state.currentUser?.id || '';
 
-    getUser = async (userId: string): Promise<void> => {
-        await this.getEntity('currentUser', this.userService.getUser, userId);
+    getUser = async (username: string): Promise<void> => {
+        await this.getEntity('currentUser', this.userService.getUser, username);
     }
 
-    createUser = async (user: User): Promise<void> => {
-        await this.createEntity('currentUser', '', user, this.userService.createUser as unknown as CreateFunction<User>);
+    createUser = async (user: NewUser): Promise<void> => {
+        await this.createEntity('currentUser', '', user, this.userService.createUser as unknown as CreateFunction<NewUser>);
     }
 
-    updateUser = async (userId: string, user: User): Promise<void> => {
+    updateUser = async (userId: string, user: NewUser): Promise<void> => {
         await this.updateEntity('currentUser', userId, user, this.userService.updateUser);
     }
 

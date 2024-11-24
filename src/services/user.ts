@@ -1,19 +1,18 @@
 import BaseService from './base';
-import {User} from "@app-types/services.ts";
+import {NewUser} from "@app-types/services.ts";
 
 class UserService extends BaseService {
     constructor() {
         super(`/users`);
     }
 
-    public getUser = async (userId: string): Promise<User> => {
-        return this.get(`/${userId}`);
-    }
+    public getUser = async (username: string): Promise<NewUser> =>
+        this.get(`/${username}`);
 
-    public createUser = async (userData: User): Promise<User> =>
+    public createUser = async (_parentId: '', userData: NewUser): Promise<NewUser> =>
         this.post(`/`, userData);
 
-    public updateUser = async (userId: string, userData: User): Promise<User> =>
+    public updateUser = async (userId: string, userData: NewUser): Promise<NewUser> =>
         this.put(`/${userId}`, userData);
 
     public deleteUser = async (userId: string): Promise<void> =>

@@ -10,16 +10,11 @@ const ardRender = (component: HTMLElement) => {
     store.incrementLoadingCount();
     const { currentUser } = store.getState();
 
-    console.log('1');
-
     if (!currentUser && router.getCurrentRoute() !== Paths.Login) {
         router.navigate(Paths.Login);
         store.decrementLoadingCount();
         return;
     }
-
-    console.log('2');
-
 
     try {
         getFileStrings(componentId).then((result) => {

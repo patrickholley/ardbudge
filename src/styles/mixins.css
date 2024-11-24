@@ -33,5 +33,5 @@
 
 @define-mixin button-secondary {
     @mixin button-style;
-    background-color: lightpink;
+    background-color: thistle;
 }

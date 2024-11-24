@@ -1,0 +1,56 @@
+@import "mixins.css";
+
+#login-button {
+    @mixin button-primary;
+
+    margin-top: 20px;
+}
+
+#login-container {
+    @mixin flex-center;
+}
+
+#tab-container {
+    display: flex;
+    align-items: end;
+    width: 100%;
+}
+
+.tab {
+    outline: none;
+    border: none;
+    padding: 0;
+    font-weight: bold;
+    font-size: 1.5rem;
+
+    &:disabled {
+        border-bottom: none;
+        box-shadow: 3px 3px 3px seagreen;
+        height: 50px;
+        color: black;
+        background-color: wheat;
+        width: 45%;
+        z-index: 2;
+    }
+
+    &:not(:disabled) {
+        box-shadow: 5px 5px 5px seagreen;
+        background-color: thistle;
+        cursor: pointer;
+        height: 40px;
+        width: 52.5%;
+    }
+}
+
+.tab-content {
+    box-shadow: 5px 5px 5px seagreen;
+    background-color: wheat;
+    display: none;
+    z-index: 2;
+
+    &.active {
+        border: 1px solid wheat;
+        padding: 20px;
+        display: block;
+    }
+}

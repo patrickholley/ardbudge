@@ -85,7 +85,6 @@ export const updateLoaderVisibility = () => {
 
             loader.style.display = 'block';
         } else {
-            document.documentElement.style.background = 'darkseagreen';
             removeLoaderDebounce = debounce(() => {
                 requestAnimationFrame(() => {
                     if (loader) {
