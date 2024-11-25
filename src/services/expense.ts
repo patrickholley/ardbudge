@@ -1,5 +1,5 @@
 import BaseService from './base';
-import {Expense} from "@app-types/services.ts";
+import {Expense, NewExpense} from "@app-types/services.ts";
 
 class ExpenseService extends BaseService {
     constructor() {
@@ -15,7 +15,7 @@ class ExpenseService extends BaseService {
     public getExpense = async (expenseId: string): Promise<Expense> =>
         this.get(`/${expenseId}`);
 
-    public createExpense = async (budgetId: string, expenseData: Expense): Promise<Expense> =>
+    public createExpense = async (budgetId: string, expenseData: NewExpense): Promise<Expense> =>
         this.post(`/`, expenseData, { budgetid: budgetId });
 
     public updateExpense = async (expenseId: string, expenseData: Expense): Promise<Expense> =>

@@ -27,8 +27,8 @@ class LoginPage extends HTMLElement {
         const signInTab = this.shadowRoot?.getElementById('sign-in-tab') as HTMLButtonElement;
         const createTab = this.shadowRoot?.getElementById('create-tab') as HTMLButtonElement;
         const loginButton = this.shadowRoot?.getElementById('login-button') as HTMLButtonElement;
-        const loginContainer = this.shadowRoot?.getElementById('login-container') as HTMLButtonElement;
-        const loginIcon = this.shadowRoot?.getElementById('login-icon') as HTMLButtonElement;
+        const loginContainer = this.shadowRoot?.getElementById('login-container') as HTMLElement;
+        const loginIcon = this.shadowRoot?.getElementById('login-icon') as HTMLElement;
 
         signInTab.disabled = !signInTab.disabled;
         createTab.disabled = !createTab.disabled;
@@ -37,10 +37,15 @@ class LoginPage extends HTMLElement {
         loginIcon.classList.toggle('create-user');
     }
 
+    handleKeyPress = (event: KeyboardEvent) => {
+        if (event.key === 'Enter') this.loginOrCreateUser().then();
+    }
+
     onRender() {
         this.shadowRoot?.getElementById('login-button')?.addEventListener('click', this.loginOrCreateUser);
         this.shadowRoot?.getElementById('sign-in-tab')?.addEventListener('click', this.switchTab);
         this.shadowRoot?.getElementById('create-tab')?.addEventListener('click', this.switchTab);
+        this.shadowRoot?.getElementById('username')?.addEventListener('keypress', this.handleKeyPress);
     }
 }
 

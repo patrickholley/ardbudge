@@ -1,5 +1,9 @@
 @import "mixins.css";
 
+h2 {
+    @mixin text-fancy;
+}
+
 #landing-container {
     @mixin flex-center;
 }

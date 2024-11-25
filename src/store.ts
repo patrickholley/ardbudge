@@ -1,6 +1,6 @@
 import { CreateFunction, EntityWithId, StoreListener, StoreState } from '@app-types/store';
 import { BudgetService, ExpenseService, UserService } from './services';
-import { Budget, Expense, NewUser } from "@app-types/services.ts";
+import {Budget, Expense, NewBudget, NewExpense, NewUser, User} from "@app-types/services.ts";
 import router from "@components/router";
 
 class Store {
@@ -187,7 +187,7 @@ class Store {
 
     createUser = async (user: NewUser): Promise<void> => {
         try {
-            await this.createUniqueEntity('currentUser', '', user, this.userService.createUser as unknown as CreateFunction<NewUser>);
+            await this.createUniqueEntity('currentUser', '', user, this.userService.createUser);
             sessionStorage.setItem('currentUser', JSON.stringify(this._state.currentUser));
             router.navigate('/');
         } catch (error) {
@@ -195,15 +195,20 @@ class Store {
         }
     }
 
-    updateUser = async (userId: string, user: NewUser): Promise<void> => {
+    updateUser = async (userId: string, user: User): Promise<void> => {
         await this.updateUniqueEntity('currentUser', userId, user, this.userService.updateUser);
         sessionStorage.setItem('currentUser', JSON.stringify(this._state.currentUser));
     }
 
     deleteUser = async (userId: string): Promise<void> => {
         await this.deleteUniqueEntity('currentUser', userId, this.userService.deleteUser);
+        this.signOut();
+    }
+
+    signOut = () => {
         this._state.currentUser = null;
         sessionStorage.removeItem('currentUser');
+        router.navigate('/');
     }
 
     // Expense methods
@@ -219,7 +224,7 @@ class Store {
         await this.getUniqueEntity('currentExpense', this.expenseService.getExpense, expenseId);
     }
 
-    createExpense = async (expense: Expense): Promise<void> => {
+    createExpense = async (expense: NewExpense): Promise<void> => {
         await this.createEntity('expenses', this.getCurrentBudgetId(), expense, this.expenseService.createExpense);
     }
 
@@ -244,16 +249,16 @@ class Store {
         await this.getUniqueEntity('currentBudget', this.budgetService.getBudget, budgetId);
     }
 
-    createBudget = async (budget: Budget): Promise<void> => {
+    createBudget = async (budget: NewBudget): Promise<void> => {
         await this.createEntity('budgets', this.getCurrentUserId(), budget, this.budgetService.createBudget);
     }
 
-    updateBudget = async (budgetId: string, budget: Expense): Promise<void> => {
-        await this.updateEntity('budgets', budgetId, budget, this.expenseService.updateExpense);
+    updateBudget = async (budgetId: string, budget: Budget): Promise<void> => {
+        await this.updateEntity('budgets', budgetId, budget, this.budgetService.updateBudget);
     }
 
     deleteBudget = async (budgetId: string): Promise<void> => {
-        await this.deleteEntity('budgets', budgetId, this.expenseService.deleteExpense);
+        await this.deleteEntity('budgets', budgetId, this.budgetService.deleteBudget);
     }
 }
 

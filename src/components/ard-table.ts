@@ -5,7 +5,7 @@ import {Expense} from "@app-types/store";
 
 const componentTag = 'ard-table';
 
-class Table extends HTMLElement {
+class ArdTable extends HTMLElement {
     constructor() {
         super();
         this.componentTag = componentTag;
@@ -46,4 +46,4 @@ class Table extends HTMLElement {
     }
 }
 
-customElements.define(componentTag, Table);
+customElements.define(componentTag, ArdTable);

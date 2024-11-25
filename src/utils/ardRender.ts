@@ -5,18 +5,10 @@ import getFileStrings from "./getFileStrings";
 import router from "@components/router";
 import {Paths} from "@app-types/router";
 
-const ardRender = (component: HTMLElement) => {
+// separated for components rendering before router
+export const lightRender = (component: HTMLElement, routerObj: typeof router | null = null) => {
     const componentId = pascalToSnake(component.componentTag || '');
     store.incrementLoadingCount();
-    const { currentUser } = store.getState();
-
-    if (!currentUser && router.getCurrentRoute() !== Paths.Login) {
-        router.navigate(Paths.Login);
-        store.decrementLoadingCount();
-        return;
-    } else if (currentUser && router.getCurrentRoute() === Paths.Login) {
-        router.navigate('/');
-    }
 
     try {
         getFileStrings(componentId).then((result) => {
@@ -31,7 +23,7 @@ const ardRender = (component: HTMLElement) => {
             if (template) {
                 const content = template.content.cloneNode(true);
                 shadowRoot.appendChild(content);
-                router.rewireAnchors(shadowRoot);
+                routerObj && routerObj.rewireAnchors(shadowRoot);
             }
 
             const style = document.createElement('style');
@@ -53,6 +45,20 @@ const ardRender = (component: HTMLElement) => {
     } finally {
         store.decrementLoadingCount();
     }
+}
+
+const ardRender = (component: HTMLElement) => {
+    const { currentUser } = store.getState();
+
+    if (!currentUser && router.getCurrentRoute() !== Paths.Login) {
+        router.navigate(Paths.Login);
+        store.decrementLoadingCount();
+        return;
+    } else if (currentUser && router.getCurrentRoute() === Paths.Login) {
+        router.navigate('/');
+    }
+
+    lightRender(component, router);
 }
 
 export default ardRender;

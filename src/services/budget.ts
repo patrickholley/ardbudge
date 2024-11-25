@@ -1,5 +1,5 @@
 import BaseService from './base';
-import {Budget} from "@app-types/services.ts";
+import {Budget, NewBudget} from "@app-types/services.ts";
 
 class BudgetService extends BaseService {
     constructor() {
@@ -12,7 +12,7 @@ class BudgetService extends BaseService {
     public getBudget = async (budgetId: string): Promise<Budget> =>
         this.get(`/${budgetId}`);
 
-    public createBudget = async (userId: string, budgetData: Budget): Promise<Budget> =>
+    public createBudget = async (userId: string, budgetData: NewBudget): Promise<Budget> =>
         this.post(`/`, budgetData, { userid: userId });
 
     public updateBudget = async (budgetId: string, budgetData: Budget): Promise<Budget> =>

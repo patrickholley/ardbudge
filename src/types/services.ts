@@ -1,7 +1,8 @@
-interface Identifiable<T> {
+interface Identifiable {
     id: string;
-    data: T;
 }
+
+export type IdentifiableWithProps<T> = Identifiable & T;
 
 export interface NewBudget {
     name: string;
@@ -19,9 +20,9 @@ export interface NewUser {
     name: string;
 }
 
-export type User = Identifiable<NewUser>;
-export type Expense = Identifiable<NewExpense>;
-export type Budget = Identifiable<NewBudget>;
+export type User = IdentifiableWithProps<NewUser>;
+export type Expense = IdentifiableWithProps<NewExpense>;
+export type Budget = IdentifiableWithProps<NewBudget>;
 
 export interface UserBudgetAssociation {
     userid: number;

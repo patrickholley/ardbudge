@@ -4,7 +4,7 @@ import {getBudgetId} from "@utils/getBudgetId";
 
 const componentTag = 'ard-budget';
 
-class Budget extends HTMLElement {
+class ArdBudget extends HTMLElement {
     _table: HTMLElement | null = null;
 
     constructor() {
@@ -30,4 +30,4 @@ class Budget extends HTMLElement {
     }
 }
 
-customElements.define(componentTag, Budget);
+customElements.define(componentTag, ArdBudget);

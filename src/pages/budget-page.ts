@@ -1,5 +1,5 @@
-import "@components/budget.ts";
-import "@components/table.ts";
+import "@components/ard-budget.ts";
+import "@components/ard-table.ts";
 import "@components/form-modal.ts";
 import ardRender from "@utils/ardRender";
 

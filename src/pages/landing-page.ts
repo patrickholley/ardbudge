@@ -19,12 +19,12 @@ class LandingPage extends HTMLElement {
         this.dispatchEvent(openFormEvent);
     }
 
-    /*onFormSubmit = (formData: FormData) => {
+    onFormSubmit = (formData: FormData) => {
         const name = formData.get('name');
 
-        if (typeof name === 'string') store.addBudget(name);
+        if (typeof name === 'string') store.createBudget({name});
         this.renderBudgetList();
-    }*/
+    }
 
     /*async renderBudgetList() {
         const budgetList = this.shadowRoot?.getElementById('budget-list');
@@ -47,7 +47,7 @@ class LandingPage extends HTMLElement {
 
     onRender() {
         this.shadowRoot?.getElementById('create-budget')?.addEventListener('click', this.openForm);
-        //document.addEventListener('submit-form', e => this.onFormSubmit((e as CustomEvent).detail));
+        document.addEventListener('submit-form', e => this.onFormSubmit((e as CustomEvent).detail));
         //this.renderBudgetList();
     }
 }

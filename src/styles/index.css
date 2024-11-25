@@ -7,7 +7,7 @@ loading-widget {
 
 #app-container {
     @mixin flex-center;
-    margin: 40px auto 0;
+    margin: 20px auto 0;
     width: min(80%, 1000px);
 }
 

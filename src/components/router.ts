@@ -1,8 +1,8 @@
 import AppConstants from "@utils/appConstants";
-import {PageComponent, Path, Routes} from "@app-types/router";
+import {PageComponent, PageComponents, Path, Routes} from "@app-types/router";
 import {updateLoaderVisibility} from "@components/loading-widget";
 import {store} from "@store";
-import '@components/nav';
+import '@components/ard-nav';
 
 let router: Router;
 
@@ -54,7 +54,7 @@ class Router {
 
         const appEl = document.getElementById("app");
         if (appEl) appEl.innerHTML = `
-            <ard-nav></ard-nav>
+            ${route !== PageComponents.Login ? `<ard-nav></ard-nav>` : ''}
             <div id="app-container">
                 <${route} />
             </div>

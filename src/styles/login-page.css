@@ -2,29 +2,28 @@
 
 #ardfudge-icon {
     @mixin ardfudge-icon;
-    @mixin size--80;
+    @mixin size--lg;
 }
 
 #ardfudge-icon-container {
     @mixin ardfudge-icon-container;
 
-    margin: 0 auto 40px;
-    @mixin size--80;
+    margin: 0 auto 20px;
+    @mixin size--lg;
 }
 
 #ardfudge-text {
-    font-family: Birthstone, serif;
-    font-size: 3rem;
-    font-weight: bold;
-    text-align: center;
-    color: var(--fudge);
-    margin: 0 0 20px;
+    @mixin text-fancy;
 }
 
 #login-button {
     @mixin button-primary;
 
     margin-top: 20px;
+
+    @mixin width--tiny {
+        margin-top: 10px;
+    }
 }
 
 #login-container {
@@ -36,7 +35,7 @@
         }
 
         #login-icon {
-            background-image: url('/public/icons/create-user.svg');
+            background-image: url('/icons/create-user.svg');
         }
 
         #login-tab-content {
@@ -60,8 +59,8 @@
 
 #login-icon {
     @mixin icon;
-    @mixin size--80;
-    background-image: url('/public/icons/sign-in.svg');
+    @mixin size--md;
+    background-image: url('/icons/sign-in.svg');
     border-radius: 10px;
 }
 

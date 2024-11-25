@@ -1,18 +1,19 @@
 import BaseService from './base';
-import {NewUser} from "@app-types/services.ts";
+import {NewUser, User} from "@app-types/services.ts";
 
 class UserService extends BaseService {
     constructor() {
         super(`/users`);
     }
 
-    public getUser = async (username: string): Promise<NewUser> =>
+    public getUser = async (username: string): Promise<User> =>
         this.get(`/${username}`);
 
-    public createUser = async (_parentId: '', userData: NewUser): Promise<NewUser> =>
+    // users do not have parentIds - _parentId present purely for compatibility with createUniqueEntity
+    public createUser = async (_parentId: string, userData: NewUser): Promise<NewUser> =>
         this.post(`/`, userData);
 
-    public updateUser = async (userId: string, userData: NewUser): Promise<NewUser> =>
+    public updateUser = async (userId: string, userData: User): Promise<User> =>
         this.put(`/${userId}`, userData);
 
     public deleteUser = async (userId: string): Promise<void> =>
