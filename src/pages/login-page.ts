@@ -27,11 +27,14 @@ class LoginPage extends HTMLElement {
         const signInTab = this.shadowRoot?.getElementById('sign-in-tab') as HTMLButtonElement;
         const createTab = this.shadowRoot?.getElementById('create-tab') as HTMLButtonElement;
         const loginButton = this.shadowRoot?.getElementById('login-button') as HTMLButtonElement;
+        const loginContainer = this.shadowRoot?.getElementById('login-container') as HTMLButtonElement;
+        const loginIcon = this.shadowRoot?.getElementById('login-icon') as HTMLButtonElement;
 
         signInTab.disabled = !signInTab.disabled;
         createTab.disabled = !createTab.disabled;
-
         loginButton.textContent = signInTab.disabled ? 'Sign In' : 'Create User';
+        loginContainer.classList.toggle('create-user');
+        loginIcon.classList.toggle('create-user');
     }
 
     onRender() {

@@ -1,7 +1,8 @@
 import AppConstants from "@utils/appConstants";
-import {PageComponent, Path, Paths, Routes} from "@app-types/router";
+import {PageComponent, Path, Routes} from "@app-types/router";
 import {updateLoaderVisibility} from "@components/loading-widget";
 import {store} from "@store";
+import '@components/nav';
 
 let router: Router;
 
@@ -52,7 +53,12 @@ class Router {
         }
 
         const appEl = document.getElementById("app");
-        if (appEl) appEl.innerHTML = `<${route} />`;
+        if (appEl) appEl.innerHTML = `
+            <ard-nav></ard-nav>
+            <div id="app-container">
+                <${route} />
+            </div>
+        `;
     }
 
     navigate(path: string): void {

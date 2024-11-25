@@ -1,10 +1,24 @@
 @import "mixins.css";
 
-h2 {
-    font-family: 'MoonDance', 'sans-serif';
+#ardfudge-icon {
+    @mixin ardfudge-icon;
+    @mixin size--80;
+}
+
+#ardfudge-icon-container {
+    @mixin ardfudge-icon-container;
+
+    margin: 0 auto 40px;
+    @mixin size--80;
+}
+
+#ardfudge-text {
+    font-family: Birthstone, serif;
+    font-size: 3rem;
+    font-weight: bold;
     text-align: center;
-    font-size: 4rem;
-    margin: 10px;
+    color: var(--fudge);
+    margin: 0 0 20px;
 }
 
 #login-button {
@@ -14,7 +28,41 @@ h2 {
 }
 
 #login-container {
+    &.create-user {
+        color: var(--light-fudge);
+
+        #ardfudge-text {
+            color: var(--light-fudge);
+        }
+
+        #login-icon {
+            background-image: url('/public/icons/create-user.svg');
+        }
+
+        #login-tab-content {
+            background-color: var(--dark-wisteria);
+            color: var(--light-fudge);
+
+            #login-button {
+                @mixin button-secondary;
+            }
+
+            #username {
+                @mixin input-secondary;
+            }
+        }
+    }
+}
+
+#login-tabs {
     @mixin flex-center;
+}
+
+#login-icon {
+    @mixin icon;
+    @mixin size--80;
+    background-image: url('/public/icons/sign-in.svg');
+    border-radius: 10px;
 }
 
 #tab-container {
@@ -26,25 +74,33 @@ h2 {
 .tab {
     outline: none;
     border: none;
-    border-top: 3px solid wheat;
+    border-top: 3px solid var(--wheat);
     border-radius: 5px 5px 0 0;
     padding: 0;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 1.25rem;
+    font-style: italic;
     height: 50px;
     width: 50%;
 
     &:disabled {
-        color: black;
-        background-color: var(--sage-green);
+        color: var(--fudge);
         z-index: 2;
-        border-right: 1px solid wheat;
     }
 
     &:not(:disabled) {
-        background-color: var(--wisteria);
         cursor: pointer;
-        border-left: 1px solid wheat;
+    }
+
+    &.tab__sign-in {
+        background-color: var(--sage-green);
+        border-right: 1px solid var(--wheat);
+    }
+
+    &.tab__create-user {
+        color: var(--light-fudge);
+        background-color: var(--dark-wisteria);
+        border-left: 1px solid var(--wheat);
     }
 }
 
@@ -59,7 +115,8 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
+    transition: 0.25s;
 }
 
 #username {

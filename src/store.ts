@@ -23,7 +23,16 @@ class Store {
         this.userService = new UserService();
         this.expenseService = new ExpenseService();
         this.budgetService = new BudgetService();
+
+        this.initializeUserFromSessionStorage();
         this.notifyListeners();
+    }
+
+    private initializeUserFromSessionStorage(): void {
+        const userData = sessionStorage.getItem('currentUser');
+        if (userData) {
+            this._state.currentUser = JSON.parse(userData);
+        }
     }
 
     getState = (): StoreState => {
@@ -169,6 +178,7 @@ class Store {
     getUser = async (username: string): Promise<void> => {
         try {
             await this.getUniqueEntity('currentUser', this.userService.getUser, username);
+            sessionStorage.setItem('currentUser', JSON.stringify(this._state.currentUser));
             router.navigate('/');
         } catch {
             alert('Username not found. Please try again or create a user instead.');
@@ -178,6 +188,7 @@ class Store {
     createUser = async (user: NewUser): Promise<void> => {
         try {
             await this.createUniqueEntity('currentUser', '', user, this.userService.createUser as unknown as CreateFunction<NewUser>);
+            sessionStorage.setItem('currentUser', JSON.stringify(this._state.currentUser));
             router.navigate('/');
         } catch (error) {
             alert('Username already taken. Please choose another username.');
@@ -186,11 +197,13 @@ class Store {
 
     updateUser = async (userId: string, user: NewUser): Promise<void> => {
         await this.updateUniqueEntity('currentUser', userId, user, this.userService.updateUser);
+        sessionStorage.setItem('currentUser', JSON.stringify(this._state.currentUser));
     }
 
     deleteUser = async (userId: string): Promise<void> => {
         await this.deleteUniqueEntity('currentUser', userId, this.userService.deleteUser);
         this._state.currentUser = null;
+        sessionStorage.removeItem('currentUser');
     }
 
     // Expense methods

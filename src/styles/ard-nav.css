@@ -1,0 +1,23 @@
+@import "mixins.css";
+
+#ardfudge-icon {
+    @mixin ardfudge-icon;
+}
+
+#ardfudge-icon-container {
+    @mixin ardfudge-icon-container;
+    border-radius: 0 10px 10px 0;
+    height: 100%;
+    width: 35px;
+    padding-left: 5px;
+}
+
+#ard-nav-container {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+    background-color: var(--dark-wheat);
+}

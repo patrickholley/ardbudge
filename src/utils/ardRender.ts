@@ -14,6 +14,8 @@ const ardRender = (component: HTMLElement) => {
         router.navigate(Paths.Login);
         store.decrementLoadingCount();
         return;
+    } else if (currentUser && router.getCurrentRoute() === Paths.Login) {
+        router.navigate('/');
     }
 
     try {

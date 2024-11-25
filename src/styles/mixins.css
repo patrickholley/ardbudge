@@ -1,4 +1,30 @@
+@define-mixin icon {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    background: no-repeat center center;
+    background-size: contain;
+}
+
+@define-mixin ardfudge-icon-container {
+    @mixin flex-center;
+
+    background-color: var(--wheat);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+@define-mixin ardfudge-icon {
+    @mixin icon;
+
+    background-image: url('/public/icons/fudge.svg');
+    transform: rotate(45deg);
+}
+
 @define-mixin flex-center {
+    color: var(--fudge);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -15,6 +41,7 @@
     font-weight: bold;
     transition: 0.25s;
     cursor: pointer;
+    color: var(--fudge);
 
     &:disabled {
         background-color: lightgray;
@@ -23,6 +50,7 @@
 
 @define-mixin button-primary {
     @mixin button-style;
+    border: 2px solid var(--fudge);
     background-color: var(--wheat);
 
     &:active {
@@ -36,20 +64,24 @@
 
 @define-mixin button-secondary {
     @mixin button-style;
-    background-color: var(--wisteria);
+    color: var(--light-fudge);
+    background-color: var(--dark-sage-green);
+    border: 2px solid var(--light-fudge);
 
     &:active {
-        background-color: var(--wisteria);
+        background-color: var(--dark-sage-green);
     }
 
     &:hover {
-        background-color: var(--dark-wisteria);
+        background-color: var(--sage-green);
     }
 }
 
 @define-mixin label-style {
-    font-weight: bold;
     margin-bottom: 5px;
+    font-style: italic;
+    font-size: 1.25rem;
+    font-weight: bold;
 }
 
 @define-mixin input-style {
@@ -62,13 +94,14 @@
     font-size: 1rem;
     transition: 0.25s;
     outline: none;
+    color: var(--fudge);
 }
 
 @define-mixin input-primary {
     @mixin input-style;
 
     background-color: var(--wheat);
-    border-color: var(--wheat);
+    border-color: var(--fudge);
 
     &:focus {
         background-color: var(--light-wheat);
@@ -77,4 +110,17 @@
 
 @define-mixin input-secondary {
     @mixin input-style;
+    color: var(--light-fudge);
+    background-color: var(--dark-sage-green);
+    border-color: var(--light-fudge);
+
+    &:focus {
+        color: var(--fudge);
+        background-color: var(--sage-green);
+    }
+}
+
+@define-mixin size--80 {
+    height: 80px;
+    width: 80px;
 }

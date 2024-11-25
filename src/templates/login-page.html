@@ -1,16 +1,22 @@
 <template id="login-page">
-    <h2>ArdFudge</h2>
     <div id="login-container">
-        <div id="tab-container">
-            <button id="sign-in-tab" class="tab" type="button" disabled>Sign In</button>
-            <button id="create-tab" class="tab" type="button">Create User</button>
+        <div id="ardfudge-icon-container">
+            <span id="ardfudge-icon"></span>
         </div>
-        <div id="login-tab-content">
-            <label id="username-label">
-                Username
-                <input id="username" type="text" />
-            </label>
-            <button id="login-button" type="button">Sign In</button>
+        <div id="login-tabs">
+            <div id="tab-container">
+                <button id="sign-in-tab" class="tab tab__sign-in" type="button" disabled>Sign In</button>
+                <button id="create-tab" class="tab tab__create-user" type="button">Create User</button>
+            </div>
+            <div id="login-tab-content">
+                <div id="login-icon"></div>
+                <label id="username-label">
+                    Username
+                    <input id="username" type="text" />
+                </label>
+                <button id="login-button" type="button">Sign In</button>
+                <p id="ardfudge-text">ArdFudge</p>
+            </div>
         </div>
     </div>
 </template>
