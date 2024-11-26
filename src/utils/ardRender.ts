@@ -39,6 +39,7 @@ export const lightRender = (component: HTMLElement, routerObj: typeof router | n
             }
 
             if (component.onRender) component.onRender();
+            if (component.onUnmount) component.disconnectedCallback = component.onUnmout;
         });
     } catch (error) {
         console.error(`Error rendering component ${componentId}:`, error);

@@ -6,21 +6,34 @@
 
 #ardfudge-icon-container {
     @mixin ardfudge-icon-container;
-    border-radius: 0 10px 10px 0;
+
+    border-radius: 0 0 0 10px;
+    border: none;
+    cursor: pointer;
     height: 100%;
-    width: 35px;
-    padding-left: 5px;
-    margin-left: -5px;
+    width: 40px;
+
+    &:hover {
+        background-color: var(--light-wheat);
+
+        &:active {
+            background-color: var(--wheat);
+        }
+    }
 }
 
 #ard-nav-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     align-items: center;
     height: 50px;
-    width: calc(100% - 10px);
-    padding: 0 5px;
+    width: 100%;
     background-color: var(--dark-wheat);
     border-bottom: 2px solid var(--wheat);
 
@@ -29,6 +42,65 @@
     }
 }
 
-#sign-out {
-    @mixin button-primary;
+#nav-title {
+    font-family: Birthstone, serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--fudge);
+    text-decoration: none;
+    margin-left: 10%;
+}
+
+#sliding-nav {
+    position: fixed;
+    top: -75px;
+    right: 0;
+    width: 120px;
+    background-color: rgba(160, 120, 176, 0.75);
+    border-bottom-left-radius: 10px;
+    border: 2px solid var(--dark-wheat);
+    transition: top 0.25s ease;
+
+    &.open {
+        top: 40px;
+    }
+
+    a, button {
+        outline: none;
+        width: 100%;
+        height: 30px;
+        border: none;
+        background-color: var(--wheat);
+        color: var(--fudge);
+        font-size: 1.25rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.25s;
+
+        &:hover {
+            background-color: var(--light-wheat);
+
+            &:active {
+                background-color: var(--wheat);
+            }
+        }
+    }
+
+    nav ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        margin-top: 2px;
+
+        &:first-child {
+            margin-top: 10px;
+        }
+
+        &:last-child {
+            margin-bottom: 10px;
+        }
+    }
 }

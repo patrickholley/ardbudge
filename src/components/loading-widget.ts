@@ -30,7 +30,7 @@ class LoadingWidget extends HTMLElement {
                     bottom: 0;
                     transform: rotate(45deg);
                     transform-origin: 50% 68%;
-                    box-shadow: 20px 16px 20px var(--light-wheat) inset;
+                    box-shadow: 20px 16px 20px var(--fudge) inset;
                 }
                 .loader:after {
                     transform: rotate(-45deg);

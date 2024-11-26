@@ -27,6 +27,8 @@
 }
 
 #login-container {
+    margin-top: -40px;
+
     &.create-user {
         color: var(--light-fudge);
 

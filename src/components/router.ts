@@ -54,10 +54,10 @@ class Router {
 
         const appEl = document.getElementById("app");
         if (appEl) appEl.innerHTML = `
-            ${route !== PageComponents.Login ? `<ard-nav></ard-nav>` : ''}
             <div id="app-container">
                 <${route} />
             </div>
+            ${route !== PageComponents.Login ? `<ard-nav></ard-nav>` : ''}
         `;
     }
 

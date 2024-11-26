@@ -4,6 +4,16 @@
     }
 }
 
+@define-mixin size--xl {
+    height: 100px;
+    width: 100px;
+
+    @mixin width--tiny {
+        height: 75px;
+        width: 75px;
+    }
+}
+
 @define-mixin size--lg {
     height: 80px;
     width: 80px;
@@ -178,5 +188,31 @@
     &:focus {
         color: var(--fudge);
         background-color: var(--sage-green);
+    }
+}
+
+@define-mixin prominent-create {
+    @mixin size--xl;
+
+    background-image: url('/icons/prominent-create.svg');
+    border: none;
+    border-radius: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: unset;
+    cursor: pointer;
+    padding: 0;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    transition: filter 0.25s;
+
+    &:hover {
+        filter: brightness(1.1);
+
+        &:active {
+            filter: brightness(1);
+        }
     }
 }
