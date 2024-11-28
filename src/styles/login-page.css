@@ -48,7 +48,7 @@
                 @mixin button-secondary;
             }
 
-            #username {
+            .login-input {
                 @mixin input-secondary;
             }
         }
@@ -120,10 +120,10 @@
     transition: 0.25s;
 }
 
-#username {
+.login-input {
     @mixin input-primary;
 }
 
-#username-label {
+.login-label {
     @mixin label-style;
 }

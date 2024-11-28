@@ -3,7 +3,6 @@ class BaseService {
 
     constructor(baseURLSuffix: string) {
         this.baseURL = (import.meta.env.VITE_DATABASE_URL || '') + baseURLSuffix;
-        console.log(this.baseURL, import.meta.env.VITE_DATABASE_URL);
     }
 
     protected async get<T>(url: string, params?: Record<string, string>): Promise<T> {
@@ -14,7 +13,6 @@ class BaseService {
 
     protected async post<T>(url: string, body: any, params?: Record<string, string>): Promise<T> {
         const queryString = params ? '?' + new URLSearchParams(params).toString() : '';
-        console.log(url, body, params);
         const response = await fetch(`${this.baseURL}${url}${queryString}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

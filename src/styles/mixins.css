@@ -62,11 +62,11 @@
 }
 
 @define-mixin button-style {
+    border: 1px solid var(--fudge);
     min-height: 40px;
     min-width: 120px;
     font-size: 1rem;
-    border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     font-weight: bold;
     transition: 0.25s;
     cursor: pointer;
@@ -97,9 +97,8 @@
 @define-mixin input-style {
     width: calc(100% - 14px);
     height: 16px;
-    border-width: 2px;
-    border-style: solid;
-    border-radius: 5px;
+    border: 1px solid var(--fudge);
+    border-radius: 10px;
     padding: 5px;
     font-size: 1rem;
     transition: 0.25s;
@@ -141,7 +140,7 @@
 
 @define-mixin button-primary {
     @mixin button-style;
-    border: 2px solid var(--fudge);
+
     background-color: var(--wheat);
 
     &:active {
@@ -157,7 +156,7 @@
     @mixin button-style;
     color: var(--light-fudge);
     background-color: var(--dark-sage-green);
-    border: 2px solid var(--light-fudge);
+    border-color: var(--light-fudge);
 
     &:active {
         background-color: var(--dark-sage-green);
@@ -172,7 +171,6 @@
     @mixin input-style;
 
     background-color: var(--wheat);
-    border-color: var(--fudge);
 
     &:focus {
         background-color: var(--light-wheat);

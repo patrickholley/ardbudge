@@ -1,7 +1,8 @@
 import { CreateFunction, EntityWithId, StoreListener, StoreState } from '@app-types/store';
 import { BudgetService, ExpenseService, UserService } from './services';
-import {Budget, Expense, NewBudget, NewExpense, NewUser, User} from "@app-types/services.ts";
+import {Budget, Expense, NewBudget, NewExpense, UserCredentials, User} from "@app-types/services.ts";
 import router from "@components/router";
+import LoginService from "./services/login";
 
 class Store {
     private readonly _state: StoreState = {
@@ -16,6 +17,7 @@ class Store {
     private userService: UserService;
     private expenseService: ExpenseService;
     private budgetService: BudgetService;
+    private loginService: LoginService;
 
     private _listeners: StoreListener[] = [];
 
@@ -23,26 +25,50 @@ class Store {
         this.userService = new UserService();
         this.expenseService = new ExpenseService();
         this.budgetService = new BudgetService();
+        this.loginService = new LoginService();
 
-        this.initializeUserFromSessionStorage();
+    this.initializeUserFromCookie();
         this.notifyListeners();
     }
 
-    private initializeUserFromSessionStorage(): void {
-        const userData = sessionStorage.getItem('currentUser');
+    private initializeUserFromCookie(): void {
+        const userData = this.getCookie('currentUser');
         if (userData) {
-            this._state.currentUser = JSON.parse(userData);
+            const parsedData = JSON.parse(userData);
+            const token = parsedData.token;
+            if (this.isTokenExpired(token)) {
+                this.deleteCookie('currentUser');
+            } else {
+                this._state.currentUser = parsedData;
+            }
         }
     }
 
-    getState = (): StoreState => {
-        return this._state;
+    private getCookie(name: string): string | null {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop()!.split(';').shift() || null;
+        return null;
     }
 
-    // General methods
-    getLoadingCount = (): number => {
-        return this._state.loadingCount;
+    private setCookie(name: string, value: string, days: number): void {
+        const expires = new Date(Date.now() + days * 86400000).toUTCString();
+        document.cookie = `${name}=${value}; expires=${expires}; path=/`;
     }
+
+    private deleteCookie(name: string): void {
+        this.setCookie(name, '', -1);
+    }
+
+    private isTokenExpired(token: string): boolean {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return Date.now() >= payload.exp * 1000;
+    }
+
+    getState = (): StoreState => this._state;
+
+    // General methods
+    getLoadingCount = (): number => this._state.loadingCount;
 
     incrementLoadingCount = (): void => {
         this._state.loadingCount += 1;
@@ -175,17 +201,7 @@ class Store {
     // User methods
     getCurrentUserId = (): string => this._state.currentUser?.id || '';
 
-    getUser = async (username: string): Promise<void> => {
-        try {
-            await this.getUniqueEntity('currentUser', this.userService.getUser, username);
-            sessionStorage.setItem('currentUser', JSON.stringify(this._state.currentUser));
-            router.navigate('/');
-        } catch {
-            alert('Username not found. Please try again or create a user instead.');
-        }
-    }
-
-    createUser = async (user: NewUser): Promise<void> => {
+    createUser = async (user: UserCredentials): Promise<void> => {
         try {
             await this.createUniqueEntity('currentUser', '', user, this.userService.createUser);
             sessionStorage.setItem('currentUser', JSON.stringify(this._state.currentUser));
@@ -202,10 +218,21 @@ class Store {
 
     deleteUser = async (userId: string): Promise<void> => {
         await this.deleteUniqueEntity('currentUser', userId, this.userService.deleteUser);
-        this.signOut();
+        this.logOut();
     }
 
-    signOut = () => {
+    login = async (name: string, password: string): Promise<void> => {
+        try {
+            const response = await this.loginService.login(name, password);
+            this.setCookie('currentUser', JSON.stringify(response), 90);
+            this._state.currentUser = response;
+            this.notifyListeners();
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
+    }
+
+    logOut = () => {
         this._state.currentUser = null;
         sessionStorage.removeItem('currentUser');
         router.navigate('/');

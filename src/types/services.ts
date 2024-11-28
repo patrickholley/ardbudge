@@ -16,11 +16,15 @@ export interface NewExpense {
     amount: number;
 }
 
-export interface NewUser {
+export interface UserCredentials {
     name: string;
+    password: string;
 }
 
-export type User = IdentifiableWithProps<NewUser>;
+export type User = Identifiable & {
+    name: string;
+    token: string;
+};
 export type Expense = IdentifiableWithProps<NewExpense>;
 export type Budget = IdentifiableWithProps<NewBudget>;
 

@@ -39,7 +39,7 @@ export const lightRender = (component: HTMLElement, routerObj: typeof router | n
             }
 
             if (component.onRender) component.onRender();
-            if (component.onUnmount) component.disconnectedCallback = component.onUnmout;
+            if (component.onDismount) component.disconnectedCallback = component.onDismount;
         });
     } catch (error) {
         console.error(`Error rendering component ${componentId}:`, error);
@@ -56,7 +56,7 @@ const ardRender = (component: HTMLElement) => {
         store.decrementLoadingCount();
         return;
     } else if (currentUser && router.getCurrentRoute() === Paths.Login) {
-        router.navigate('/');
+        router.navigate(Paths.Landing);
     }
 
     lightRender(component, router);

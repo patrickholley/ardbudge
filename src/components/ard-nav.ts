@@ -19,7 +19,7 @@ class ArdNav extends HTMLElement {
     }
 
     handleSignOut = () => {
-        store.signOut();
+        store.logOut();
     }
 
     toggleNav = () => {
@@ -38,7 +38,7 @@ class ArdNav extends HTMLElement {
             ?.addEventListener('click', this.toggleNav);
     }
 
-    onUnmount() {
+    onDismount() {
         document.removeEventListener('click', this.handleDocumentClick);
     }
 }

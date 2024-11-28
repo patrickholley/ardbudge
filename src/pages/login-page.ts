@@ -12,13 +12,14 @@ class LoginPage extends HTMLElement {
 
     loginOrCreateUser = async () => {
         const name = (this.shadowRoot?.getElementById('username') as HTMLInputElement).value;
+        const password = (this.shadowRoot?.getElementById('password') as HTMLInputElement).value;
         const isNewUser = (this.shadowRoot?.getElementById('create-tab') as HTMLInputElement).disabled;
 
         if (name) {
             if (isNewUser) {
-                await store.createUser({ name });
+                await store.createUser({ name, password });
             } else {
-                await store.getUser(name);
+                await store.login(name, password);
             }
         }
     }
