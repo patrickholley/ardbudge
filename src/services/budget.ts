@@ -6,14 +6,14 @@ class BudgetService extends BaseService {
         super(`/budgets`);
     }
 
-    public getBudgets = async (userId: string): Promise<Budget[]> =>
-        this.get(`/`, { userid: userId });
+    public getBudgets = async (): Promise<Budget[]> =>
+        this.get(`/`);
 
     public getBudget = async (budgetId: string): Promise<Budget> =>
         this.get(`/${budgetId}`);
 
-    public createBudget = async (userId: string, budgetData: NewBudget): Promise<Budget> =>
-        this.post(`/`, budgetData, { userid: userId });
+    public createBudget = async (_userId: string, budgetData: NewBudget): Promise<Budget> =>
+        this.post(`/`, budgetData);
 
     public updateBudget = async (budgetId: string, budgetData: Budget): Promise<Budget> =>
         this.put(`/${budgetId}`, budgetData);

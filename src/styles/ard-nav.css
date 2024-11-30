@@ -14,7 +14,7 @@
     width: 40px;
 
     &:hover {
-        background-color: var(--light-wheat);
+        background-color: var(--light-fudge);
 
         &:active {
             background-color: var(--wheat);
@@ -43,12 +43,9 @@
 }
 
 #nav-title {
-    font-family: Birthstone, serif;
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--fudge);
-    text-decoration: none;
-    margin-left: 10%;
+    @mixin text-fancy;
+
+    margin: 0 0 0 10%;
 }
 
 #sliding-nav {
@@ -78,7 +75,7 @@
         transition: 0.25s;
 
         &:hover {
-            background-color: var(--light-wheat);
+            background-color: var(--light-fudge);
 
             &:active {
                 background-color: var(--wheat);

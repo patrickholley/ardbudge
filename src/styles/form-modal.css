@@ -1,6 +1,7 @@
 @import "./mixins.css";
 
 #modal-container {
+    color: var(--light-fudge);
     display: none;
     position: absolute;
     top: 0;
@@ -13,23 +14,30 @@
 }
 
 #modal-content {
-    background-color: wheat;
+    background-color: var(--dark-wisteria);
     border-radius: 5px;
     margin: 50px auto auto;
     width: min(90%, 320px);
     overflow: scroll;
-    font-size: 1.25rem;
     font-weight: bold;
 }
 
 input {
-    width: min(100%, 300px);
-    height: 30px;
-    box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    @mixin input-secondary;
+}
+
+fieldset {
+    border: 1px solid var(--dark-sage-green)
 }
 
 form {
     padding: 10px 25px;
+}
+
+legend {
+    font-family: Birthstone, serif;
+    font-size: 1.75rem;
+    font-style: italic;
 }
 
 #action-footer {
@@ -40,15 +48,9 @@ form {
 }
 
 #button__submit {
-    @mixin button-primary;
-    background-color: darkseagreen;
-
-    &:disabled {
-        background-color: lightgray;
-    }
+    @mixin button-secondary;
 }
 
 #button__cancel {
-    @mixin button-secondary;
-    background-color: lightpink;
+    @mixin button-secondary__alt;
 }

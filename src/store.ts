@@ -1,6 +1,6 @@
-import { CreateFunction, EntityWithId, StoreListener, StoreState } from '@app-types/store';
-import { BudgetService, ExpenseService, UserService } from './services';
-import {Budget, Expense, NewBudget, NewExpense, UserCredentials, User} from "@app-types/services.ts";
+import {CreateFunction, EntityWithId, StoreListener, StoreState} from '@app-types/store';
+import {BudgetService, ExpenseService, UserService} from './services';
+import {Budget, Expense, NewBudget, NewExpense, User, UserCredentials} from "@app-types/services.ts";
 import router from "@components/router";
 import LoginService from "./services/login";
 
@@ -34,13 +34,7 @@ class Store {
     private initializeUserFromCookie(): void {
         const userData = this.getCookie('currentUser');
         if (userData) {
-            const parsedData = JSON.parse(userData);
-            const token = parsedData.token;
-            if (this.isTokenExpired(token)) {
-                this.deleteCookie('currentUser');
-            } else {
-                this._state.currentUser = parsedData;
-            }
+            this._state.currentUser = JSON.parse(userData);
         }
     }
 
@@ -51,18 +45,12 @@ class Store {
         return null;
     }
 
-    private setCookie(name: string, value: string, days: number): void {
-        const expires = new Date(Date.now() + days * 86400000).toUTCString();
-        document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+    private setCookie(name: string, value: string): void {
+        document.cookie = `${name}=${value}; path=/; SameSite=None; Secure`;
     }
 
     private deleteCookie(name: string): void {
-        this.setCookie(name, '', -1);
-    }
-
-    private isTokenExpired(token: string): boolean {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        return Date.now() >= payload.exp * 1000;
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
     }
 
     getState = (): StoreState => this._state;
@@ -199,15 +187,15 @@ class Store {
     }
 
     // User methods
-    getCurrentUserId = (): string => this._state.currentUser?.id || '';
+    getCurrentUser = (): User | null => this._state.currentUser;
 
     createUser = async (user: UserCredentials): Promise<void> => {
         try {
             await this.createUniqueEntity('currentUser', '', user, this.userService.createUser);
-            sessionStorage.setItem('currentUser', JSON.stringify(this._state.currentUser));
+            this.setCookie('currentUser', JSON.stringify(this._state.currentUser));
             router.navigate('/');
         } catch (error) {
-            alert('Username already taken. Please choose another username.');
+            alert('The username you entered is already in use. Please try again.');
         }
     }
 
@@ -224,27 +212,28 @@ class Store {
     login = async (name: string, password: string): Promise<void> => {
         try {
             const response = await this.loginService.login(name, password);
-            this.setCookie('currentUser', JSON.stringify(response), 90);
+            this.setCookie('currentUser', JSON.stringify(response));
             this._state.currentUser = response;
+            router.navigate('/');
             this.notifyListeners();
         } catch (error) {
-            console.error('Login failed:', error);
+            alert('The username or password you entered is incorrect. Please try again.');
         }
     }
 
     logOut = () => {
         this._state.currentUser = null;
-        sessionStorage.removeItem('currentUser');
+        this.deleteCookie('currentUser');
         router.navigate('/');
     }
 
     // Expense methods
-    getCurrentExpenseId = (): string => {
-        return this._state.currentExpense?.id || '';
+    getCurrentExpense = (): Expense | null => {
+        return this._state.currentExpense;
     }
 
     getExpenses = async (): Promise<void> => {
-        await this.getEntity('expenses', this.expenseService.getExpenses, this.getCurrentBudgetId());
+        await this.getEntity('expenses', this.expenseService.getExpenses, this.getCurrentBudget()?.id || '');
     }
 
     getExpense = async (expenseId: string): Promise<void> => {
@@ -252,7 +241,7 @@ class Store {
     }
 
     createExpense = async (expense: NewExpense): Promise<void> => {
-        await this.createEntity('expenses', this.getCurrentBudgetId(), expense, this.expenseService.createExpense);
+        await this.createEntity('expenses', this.getCurrentBudget()?.id || '', expense, this.expenseService.createExpense);
     }
 
     updateExpense = async (expenseId: string, expense: Expense): Promise<void> => {
@@ -264,12 +253,10 @@ class Store {
     }
 
     // Budget methods
-    getCurrentBudgetId = (): string => {
-        return this._state.currentBudget?.id || '';
-    }
+    getCurrentBudget = (): Budget | null => this._state.currentBudget;
 
     getBudgets = async (): Promise<void> => {
-        await this.getEntity('budgets', this.budgetService.getBudgets, this.getCurrentUserId());
+        await this.getEntity('budgets', this.budgetService.getBudgets, this.getCurrentUser()?.id || '');
     }
 
     getBudget = async (budgetId: string): Promise<void> => {
@@ -277,7 +264,7 @@ class Store {
     }
 
     createBudget = async (budget: NewBudget): Promise<void> => {
-        await this.createEntity('budgets', this.getCurrentUserId(), budget, this.budgetService.createBudget);
+        await this.createEntity('budgets', '', budget, this.budgetService.createBudget);
     }
 
     updateBudget = async (budgetId: string, budget: Budget): Promise<void> => {

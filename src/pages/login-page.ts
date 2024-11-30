@@ -47,6 +47,7 @@ class LoginPage extends HTMLElement {
         this.shadowRoot?.getElementById('sign-in-tab')?.addEventListener('click', this.switchTab);
         this.shadowRoot?.getElementById('create-tab')?.addEventListener('click', this.switchTab);
         this.shadowRoot?.getElementById('username')?.addEventListener('keypress', this.handleKeyPress);
+        this.shadowRoot?.getElementById('password')?.addEventListener('keypress', this.handleKeyPress);
     }
 }
 

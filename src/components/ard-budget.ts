@@ -10,7 +10,9 @@ class ArdBudget extends HTMLElement {
     constructor() {
         super();
         this.componentTag = componentTag;
-        this.budgetName = store.getBudget(getBudgetId())?.name;
+        store.getBudget(getBudgetId()).then(() => {
+            this.budgetName = store.getCurrentBudget()?.name;
+        });
         ardRender(this);
     }
 

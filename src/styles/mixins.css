@@ -75,6 +75,10 @@
 
     &:disabled {
         background-color: lightgray;
+
+        &:hover {
+            background-color: lightgray;
+        }
     }
 
     @mixin width--tiny {
@@ -107,6 +111,41 @@
 
     @mixin width--tiny {
         height: 12px;
+    }
+}
+
+@define-mixin list-style {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    background-color: var(--fudge);
+    border-radius: 10px;
+
+    li {
+        background-color: var(--wheat);
+        border-radius: 10px;
+        margin: 5px 5px;
+
+        &:hover {
+            background-color: var(--light-fudge);
+        }
+
+        &:not(:last-child) {
+            margin-bottom: 10px;
+        }
+
+        &:last-child {
+            margin-bottom: 5px;
+        }
+    }
+
+    a, a:visited {
+        padding: 10px;
+        color: inherit;
+        display: block;
+        width: 100%;
+        text-decoration: none;
     }
 }
 
@@ -148,7 +187,7 @@
     }
 
     &:hover {
-        background-color: var(--light-wheat);
+        background-color: var(--light-fudge);
     }
 }
 
@@ -167,13 +206,28 @@
     }
 }
 
+@define-mixin button-secondary__alt {
+    @mixin button-style;
+    color: var(--light-fudge);
+    background-color: unset;
+    border-color: var(--light-fudge);
+
+    &:active {
+        background-color: unset;
+    }
+
+    &:hover {
+        background-color: var(--wisteria);
+    }
+}
+
 @define-mixin input-primary {
     @mixin input-style;
 
     background-color: var(--wheat);
 
     &:focus {
-        background-color: var(--light-wheat);
+        background-color: var(--light-fudge);
     }
 }
 
@@ -187,6 +241,10 @@
         color: var(--fudge);
         background-color: var(--sage-green);
     }
+}
+
+@define-mixin list-primary {
+    @mixin list-style;
 }
 
 @define-mixin prominent-create {
