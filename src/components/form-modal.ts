@@ -1,9 +1,13 @@
 import ardRender from "@utils/ardRender";
 import pascalToSnake from "@utils/pascalToSnake";
+import getFileStrings from "@utils/getFileStrings";
+import FieldsetModule from "./fieldset-module";
 
 const componentTag = 'form-modal';
 
 class FormModal extends HTMLElement {
+    module: FieldsetModule | null = null;
+
     constructor() {
         super();
         this.componentTag = componentTag;
@@ -17,11 +21,24 @@ class FormModal extends HTMLElement {
         if (formModal) formModal.style.display = shouldBeOpen ? 'block' : 'none';
     }
 
-    async getFieldset() {
-        if (this.formName) {
-            const templateString = (await import(`../templates/${pascalToSnake(this.formName || '')}.html?raw`)).default;
-            const fieldset = this.shadowRoot?.querySelector('#form-fieldset') as HTMLElement;
-            fieldset.innerHTML = templateString;
+    async renderFieldset() {
+        const fileName = pascalToSnake(this.formName || '');
+
+        if (fileName) {
+            getFileStrings(fileName).then(async (result) => {
+                const [templateString, stylesString] = result;
+
+                const fieldset = this.shadowRoot?.querySelector('#form-fieldset') as HTMLElement;
+                fieldset.innerHTML = templateString;
+
+                const style = document.createElement('style');
+                style.textContent = stylesString;
+                this.shadowRoot?.appendChild(style);
+
+                const Module = await import(`./fieldset-${fileName}.ts`);
+                this.module = new Module.default(this.shadowRoot);
+                this.module?.prepareForm();
+            });
         }
     }
 
@@ -48,7 +65,7 @@ class FormModal extends HTMLElement {
     }
 
     async onRender() {
-        await this.getFieldset();
+        await this.renderFieldset();
         document.addEventListener('open-form', () => this.toggleOpen(true));
 
         this.shadowRoot?.querySelector('form')?.addEventListener('submit', this.onSubmit);

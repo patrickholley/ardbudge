@@ -16,3 +16,5 @@ export interface EntityWithId {
 }
 
 export type CreateFunction<T> = (parentId: string, entity: T) => Promise<T>;
+
+export type FetchFunction<T> = (id: string, additionalParams?: unknown) => Promise<T>;

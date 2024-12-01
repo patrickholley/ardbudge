@@ -1,4 +1,4 @@
-import {CreateFunction, EntityWithId, StoreListener, StoreState} from '@app-types/store';
+import {CreateFunction, EntityWithId, FetchFunction, StoreListener, StoreState} from '@app-types/store';
 import {BudgetService, ExpenseService, UserService} from './services';
 import {Budget, Expense, NewBudget, NewExpense, User, UserCredentials} from "@app-types/services.ts";
 import router from "@components/router";
@@ -92,11 +92,12 @@ class Store {
 
     private getEntity = async <T>(
         key: keyof StoreState,
-        fetchFunc: (id: string) => Promise<T>,
-        entityId: string
+        fetchFunc: FetchFunction<T>,
+        entityId: string,
+        additionalArgs?: unknown
     ): Promise<void> => {
         await this.handleRequest(async () => {
-            const entity = await fetchFunc(entityId);
+            const entity = await fetchFunc(entityId, additionalArgs);
             (this._state[key] as T[]) = entity as unknown as T[];
         });
     }
@@ -232,8 +233,13 @@ class Store {
         return this._state.currentExpense;
     }
 
-    getExpenses = async (): Promise<void> => {
-        await this.getEntity('expenses', this.expenseService.getExpenses, this.getCurrentBudget()?.id || '');
+    getExpenses = async (startDate: string, endDate: string | null): Promise<void> => {
+        await this.getEntity(
+            'expenses',
+            this.expenseService.getExpenses as unknown as FetchFunction<Expense>,
+            this.getCurrentBudget()?.id || '',
+            [startDate, endDate]
+        );
     }
 
     getExpense = async (expenseId: string): Promise<void> => {

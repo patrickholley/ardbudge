@@ -11,7 +11,11 @@
     border: none;
     cursor: pointer;
     height: 100%;
-    width: 40px;
+    width: 60px;
+
+    @mixin width--tiny {
+        width: 40px;
+    }
 
     &:hover {
         background-color: var(--light-fudge);

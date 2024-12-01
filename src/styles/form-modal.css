@@ -1,24 +1,25 @@
 @import "./mixins.css";
 
 #modal-container {
+    @mixin size--full;
+
     color: var(--light-fudge);
     display: none;
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
+    z-index: 20;
+    overflow-x: visible;
+    overflow-y: scroll;
     background-color: rgb(0, 0, 0, 0.5);
 }
 
 #modal-content {
     background-color: var(--dark-wisteria);
     border-radius: 5px;
-    margin: 50px auto auto;
+    margin: 20px auto;
+    top: -10px;
     width: min(90%, 320px);
-    overflow: scroll;
     font-weight: bold;
 }
 
@@ -26,8 +27,14 @@ input {
     @mixin input-secondary;
 }
 
+input, select {
+    margin: 2px;
+}
+
 fieldset {
-    border: 1px solid var(--dark-sage-green)
+    border: 1px solid var(--dark-sage-green);
+    display: flex;
+    flex-direction: column;
 }
 
 form {

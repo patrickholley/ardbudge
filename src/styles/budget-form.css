@@ -1,0 +1,28 @@
+@import "mixins.css";
+
+#budget-start {
+    height: 24px;
+
+    &::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+    }
+}
+
+select {
+    @mixin select-secondary;
+}
+
+#period-reverse-checkbox {
+    @mixin checkbox-style;
+}
+
+#period-reverse-question {
+    display: inline-block;
+    font-size: 0.8rem;
+    margin: 5px 0;
+    width: calc(100% - 40px);
+}
+
+.period-tooltip {
+    @mixin tooltip;
+}
