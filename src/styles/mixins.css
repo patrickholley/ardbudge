@@ -288,9 +288,9 @@
 
 @define-mixin input-secondary {
     @mixin input-style;
-    color: var(--light-fudge);
     background-color: var(--dark-sage-green);
     border-color: var(--light-fudge);
+    color: var(--light-fudge);
 
     &:focus {
         color: var(--fudge);
