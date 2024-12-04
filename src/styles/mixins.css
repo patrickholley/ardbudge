@@ -49,11 +49,20 @@
     }
 }
 
+@define-mixin size--xs {
+    height: 30px;
+    width: 30px;
+
+    @mixin width--tiny {
+        height: 20px;
+        width: 20px;
+    }
+}
+
 @define-mixin icon {
     @mixin size--sm;
 
     display: inline-block;
-    vertical-align: middle;
     background: no-repeat center center;
     background-size: contain;
 }
@@ -67,7 +76,7 @@
 }
 
 @define-mixin button-style {
-    border: 1px solid var(--fudge);
+    border: none;
     min-height: 40px;
     min-width: 120px;
     font-size: 1rem;
@@ -134,7 +143,7 @@
 @define-mixin input-style {
     width: calc(100% - 14px);
     height: 16px;
-    border: 1px solid var(--fudge);
+    border: none;
     border-radius: 10px;
     padding: 5px;
     font-size: 1rem;
@@ -148,20 +157,19 @@
 }
 
 @define-mixin list-style {
+    font-weight: bold;
     list-style-type: none;
     padding: 0;
     margin: 0;
-    width: 100%;
-    background-color: var(--fudge);
-    border-radius: 10px;
+    width: 150px;
 
     li {
-        background-color: var(--wheat);
-        border-radius: 10px;
+        background: var(--wheat);
+        border-radius: 20px;
         margin: 5px 5px;
 
         &:hover {
-            background-color: var(--light-fudge);
+            background: var(--dark-wheat);
         }
 
         &:not(:last-child) {
@@ -177,15 +185,18 @@
         padding: 10px;
         color: inherit;
         display: block;
-        width: 100%;
+        width: calc(100% - 20px);
+        text-align: center;
         text-decoration: none;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 }
 
 @define-mixin select-style {
     width: 100%;
     height: 28px;
-    border: 1px solid var(--fudge);
     border-radius: 10px;
     font-size: 1rem;
     transition: 0.25s;
@@ -308,7 +319,6 @@
 
     background-image: url('/icons/prominent-create.svg');
     border: none;
-    border-radius: 50%;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -321,7 +331,7 @@
     transition: filter 0.25s;
 
     &:hover {
-        filter: brightness(1.1);
+        filter: brightness(0.75);
 
         &:active {
             filter: brightness(1);

@@ -3,7 +3,8 @@
 h2 {
     @mixin text-fancy;
 
-    margin: 0 0 20px;
+    font-size: 3rem;
+    margin: 0 0 10px;
 }
 
 #budget-list {

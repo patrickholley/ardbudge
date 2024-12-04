@@ -7,22 +7,26 @@
 #ardfudge-icon-container {
     @mixin ardfudge-icon-container;
 
-    border-radius: 0 0 0 10px;
+    background-color: unset;
+    font-style: italic;
     border: none;
+    border-radius: 0;
     cursor: pointer;
     height: 100%;
-    width: 60px;
-
-    @mixin width--tiny {
-        width: 40px;
-    }
+    padding: 0;
+    width: 50px;
 
     &:hover {
-        background-color: var(--light-fudge);
+        filter: brightness(2);
 
         &:active {
-            background-color: var(--wheat);
+            filter: brightness(1);
         }
+    }
+
+    &.open {
+        cursor: default;
+        text-decoration: none;
     }
 }
 
@@ -38,12 +42,7 @@
     align-items: center;
     height: 50px;
     width: 100%;
-    background-color: var(--dark-wheat);
-    border-bottom: 2px solid var(--wheat);
-
-    @mixin width--tiny {
-        height: 40px;
-    }
+    background: var(--dark-wheat);
 }
 
 #nav-title {
@@ -54,36 +53,33 @@
 
 #sliding-nav {
     position: fixed;
-    top: -75px;
+    top: -80px;
     right: 0;
     width: 120px;
-    background-color: rgba(160, 120, 176, 0.75);
     border-bottom-left-radius: 10px;
-    border: 2px solid var(--dark-wheat);
-    transition: top 0.25s ease;
+    transition: 0.25s ease;
+    background-color: var(--wheat);
 
     &.open {
-        top: 40px;
+        top: 50px;
     }
 
     a, button {
+        background-color: inherit;
+        display: flex;
+        align-items: center;
         outline: none;
         width: 100%;
         height: 30px;
         border: none;
-        background-color: var(--wheat);
         color: var(--fudge);
-        font-size: 1.25rem;
+        font-size: 1rem;
         font-weight: bold;
         cursor: pointer;
         transition: 0.25s;
 
         &:hover {
-            background-color: var(--light-fudge);
-
-            &:active {
-                background-color: var(--wheat);
-            }
+            text-decoration: underline;
         }
     }
 
@@ -104,4 +100,11 @@
             margin-bottom: 10px;
         }
     }
+}
+
+#sign-out-icon {
+    @mixin icon;
+
+    background-image: url('/icons/sign-out.svg');
+    margin-right: 5px;
 }

@@ -4,6 +4,7 @@ import {store} from "@store";
 const componentTag = 'ard-nav';
 
 class ArdNav extends HTMLElement {
+    navButton?: HTMLElement | null;
     slidingNav?: HTMLElement | null;
 
     constructor() {
@@ -13,29 +14,29 @@ class ArdNav extends HTMLElement {
     }
 
     handleDocumentClick = (event: Event) => {
-        if (this.slidingNav?.classList.contains('open') && !this.contains(event.target as Node)) {
-            this.slidingNav.classList.remove('open');
-        }
+        if (!this.contains(event.target as Node))  this.toggleNav('remove');
     }
 
     handleSignOut = () => {
         store.logOut();
     }
 
-    toggleNav = () => {
-        const slidingNav = this.shadowRoot?.getElementById('sliding-nav');
-        slidingNav?.classList.toggle('open');
+    toggleNav = (addOrRemove: 'add' | 'remove') => {
+        [this.slidingNav, this.navButton].forEach(
+            el => el?.classList[addOrRemove]('open')
+        );
     }
 
     onRender() {
         document.addEventListener('click', this.handleDocumentClick);
         this.slidingNav = this.shadowRoot?.getElementById('sliding-nav');
+        this.navButton = this.shadowRoot?.getElementById('ardfudge-icon-container');
 
         (this.shadowRoot?.getElementById('sign-out') as HTMLButtonElement)
             ?.addEventListener('click', this.handleSignOut);
 
-        (this.shadowRoot?.getElementById('ardfudge-icon-container') as HTMLButtonElement)
-            ?.addEventListener('click', this.toggleNav);
+        (this.navButton as HTMLButtonElement)
+            ?.addEventListener('click', () => this.toggleNav('add'));
     }
 
     onDismount() {
