@@ -5,29 +5,42 @@
 }
 
 #ardfudge-icon-container {
-    @mixin ardfudge-icon-container;
+    height: 40px;
+    width: 40px;
+    margin-right: 5px;
+}
 
-    background-color: unset;
+#nav-menu {
+    background-color: var(--dark-wisteria);
     font-style: italic;
-    border: none;
-    border-radius: 0;
-    cursor: pointer;
+    border-left: 2px solid var(--fudge);
+    border-bottom: 2px solid var(--fudge);
     height: 100%;
-    padding: 0;
-    width: 50px;
+    width: 130px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transition: 0.25s ease;
+    position: absolute;
+    right: -85px;
+    padding: 0 0 0 5px;
+    border-radius: 0 0 0 10px;
+    font-family: Birthstone, serif;
 
     &:hover {
-        filter: brightness(2);
+        right: 0;
 
-        &:active {
-            filter: brightness(1);
+        #sliding-nav {
+            right: 0;
         }
     }
+}
 
-    &.open {
-        cursor: default;
-        text-decoration: none;
-    }
+#ardfudge-icon-label {
+    cursor: default;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 2.25rem;
 }
 
 #ard-nav-container {
@@ -48,21 +61,21 @@
 #nav-title {
     @mixin text-fancy;
 
+    font-size: 2.25rem;
     margin: 0 0 0 10%;
 }
 
 #sliding-nav {
     position: fixed;
-    top: -80px;
-    right: 0;
+    top: 50px;
+    right: -121px;
     width: 120px;
     border-bottom-left-radius: 10px;
+    border-left: 1px solid var(--fudge);
+    border-bottom: 1px solid var(--fudge);
     transition: 0.25s ease;
     background-color: var(--wheat);
-
-    &.open {
-        top: 50px;
-    }
+    z-index: -10;
 
     a, button {
         background-color: inherit;
@@ -76,14 +89,15 @@
         font-size: 1rem;
         font-weight: bold;
         cursor: pointer;
-        transition: 0.25s;
+        transition: 0.25s ease;
+        padding: 0;
 
         &:hover {
             text-decoration: underline;
         }
     }
 
-    nav ul {
+    ul {
         list-style-type: none;
         padding: 0;
         margin: 0;
