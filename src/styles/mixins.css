@@ -14,29 +14,15 @@
 }
 
 @define-mixin button-primary {
-    background-color: var(--wheat);
-    border: none;
+    @mixin style-primary;
+
     border-radius: 20px;
-    color: var(--fudge);
     cursor: pointer;
-    font-size: 1rem;
     font-weight: bold;
     min-height: 40px;
     min-width: 120px;
     padding: 0 10px;
     transition: 0.25s;
-
-    &:disabled {
-        background-color: lightgray;
-
-        &:hover {
-            background-color: lightgray;
-        }
-    }
-
-    &:hover {
-        background-color: var(--light-fudge);
-    }
 
     @mixin width--tiny {
         min-height: 30px;
@@ -46,18 +32,9 @@
 
 @define-mixin button-secondary {
     @mixin button-primary;
+    @mixin style-secondary;
 
-    background-color: var(--dark-sage-green);
-    border-color: var(--light-fudge);
-    color: var(--light-fudge);
-
-    &:active {
-        background-color: var(--dark-sage-green);
-    }
-
-    &:hover {
-        background-color: var(--sage-green);
-    }
+    border-radius: 20px;
 }
 
 @define-mixin button-secondary__alt {
@@ -71,8 +48,10 @@
         background-color: unset;
     }
 
-    &:hover {
+    @mixin hover-focus {
         background-color: var(--wisteria);
+        border: 2px solid var(--light-fudge);
+        color: var(--light-fudge);
     }
 }
 
@@ -112,6 +91,13 @@
     justify-content: center;
 }
 
+@define-mixin hover-focus {
+    &:hover,
+    &:focus {
+        @mixin-content;
+    }
+}
+
 @define-mixin icon {
     @mixin size--sm;
 
@@ -121,20 +107,12 @@
 }
 
 @define-mixin input-primary {
-    background-color: var(--wheat);
-    border: none;
-    border-radius: 10px;
-    color: var(--fudge);
-    font-size: 1rem;
+    @mixin style-primary;
+
     height: 16px;
-    outline: none;
     padding: 5px;
     transition: 0.25s;
     width: calc(100% - 14px);
-
-    &:focus {
-        background-color: var(--light-fudge);
-    }
 
     @mixin width--tiny {
         height: 12px;
@@ -143,15 +121,7 @@
 
 @define-mixin input-secondary {
     @mixin input-primary;
-
-    background-color: var(--dark-sage-green);
-    border-color: var(--light-fudge);
-    color: var(--light-fudge);
-
-    &:focus {
-        background-color: var(--sage-green);
-        color: var(--fudge);
-    }
+    @mixin style-secondary;
 }
 
 @define-mixin label-style {
@@ -166,18 +136,18 @@
 }
 
 @define-mixin list-primary {
-    font-weight: bold;
     list-style-type: none;
     margin: 0;
     padding: 0;
     width: 150px;
 
     a, a:visited {
-        color: inherit;
-        display: block;
+        @mixin button-primary;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
         overflow: hidden;
-        padding: 10px;
-        text-align: center;
         text-decoration: none;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -188,10 +158,6 @@
         background: var(--wheat);
         border-radius: 20px;
         margin: 5px 5px;
-
-        &:hover {
-            background: var(--dark-wheat);
-        }
 
         &:last-child {
             margin-bottom: 5px;
@@ -217,25 +183,25 @@
     padding: 0;
     position: fixed;
     right: 20px;
+
+    @mixin hover-focus {
+        border: none;
+        filter: brightness(1.25);
+        outline: none;
+    }
 }
 
 @define-mixin select-primary {
-    background-color: var(--wheat);
-    border-radius: 10px;
-    color: var(--fudge);
-    font-size: 1rem;
+    @mixin style-primary;
+
     height: 28px;
-    outline: none;
     transition: 0.25s;
     width: 100%;
 }
 
 @define-mixin select-secondary {
     @mixin select-primary;
-
-    background-color: var(--dark-sage-green);
-    border-color: var(--light-fudge);
-    color: var(--light-fudge);
+    @mixin style-secondary;
 }
 
 @define-mixin size--full {
@@ -293,6 +259,39 @@
     }
 }
 
+@define-mixin style-primary {
+    background-color: var(--wheat);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    color: var(--fudge);
+    cursor: pointer;
+    font-size: 1rem;
+    outline: none;
+
+    &:disabled {
+        background-color: lightgray;
+    }
+
+    @mixin hover-focus {
+        background-color: var(--light-fudge);
+        border-color: var(--fudge);
+        outline: none;
+    }
+}
+
+@define-mixin style-secondary {
+    @mixin style-primary;
+
+    background-color: var(--dark-sage-green);
+    color: var(--light-fudge);
+
+    @mixin hover-focus {
+        background-color: var(--sage-green);
+        border-color: transparent;
+        color: var(--fudge);
+    }
+}
+
 @define-mixin text-fancy {
     color: var(--fudge);
     font-family: Birthstone, serif;
@@ -318,7 +317,10 @@
         @mixin tooltip-content;
     }
 
-    &:hover {
+    @mixin hover-focus {
+        border: none;
+        outline: none;
+
         span {
             display: block;
         }

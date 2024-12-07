@@ -11,6 +11,12 @@
     background-color: unset;
     border: none;
     cursor: pointer;
+
+    @mixin hover-focus{
+        border: none;
+        filter: brightness(1.5);
+        outline: none;
+    }
 }
 
 #nav-menu {
@@ -69,7 +75,7 @@
     @mixin text-fancy;
 
     font-size: 2.25rem;
-    margin: 0 0 0 10%;
+    margin: 0 0 0 10px;
 }
 
 #sliding-nav {
@@ -98,7 +104,7 @@
         transition: 0.25s ease;
         padding: 0;
 
-        &:hover {
+        @mixin hover-focus {
             text-decoration: underline;
         }
     }
