@@ -46,7 +46,7 @@ class Store {
     }
 
     private setCookie(name: string, value: string): void {
-        document.cookie = `${name}=${value}; path=/; SameSite=None; Secure`;
+        document.cookie = `${name}=${value}; path=/; Max-Age=${60 * 60 * 24 * 365 * 10}; SameSite=Lax; Secure`;
     }
 
     private deleteCookie(name: string): void {

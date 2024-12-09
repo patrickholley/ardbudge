@@ -18,32 +18,33 @@
         <input type="number" name="periodAmount" min="0" />
     </label>
     <label id="period-frequency-label">
-        Frequency
-        <span id="period-frequency-tooltip" class="period-tooltip" aria-describedby="period-frequency-text" tabindex="0">
-            <span id="period-frequency-text" class="period-tooltip-text">
-                Twice per month's second cycle begins 14 days after the first
+        <span class="period-tooltip-container">
+            <span>Frequency</span>
+            <span id="period-frequency-tooltip" class="period-tooltip" aria-describedby="period-frequency-text" tabindex="0">
+                <span id="period-frequency-text" class="period-tooltip-text">
+                    Twice per month's second cycle begins 14 days after the first
+                </span>
             </span>
         </span>
-        <select id="period-frequency" name="periodFrequency" aria-describedby="period-frequency-text">
-        </select>
+        <select id="period-frequency" name="periodFrequency" aria-describedby="period-frequency-text"></select>
     </label>
     <div id="period-settings-conditional">
-        <label id="period-start-weekday-label">
-            Start Day
-            <select id="period-start-weekday" name="periodStartWeekday">
-            </select>
+        <label id="period-reset-weekday-label">
+            Reset Day
+            <select id="period-reset-weekday" name="periodResetWeekday"></select>
         </label>
         <div id="monthday-container">
-            <label id="period-start-monthday-label">
-                Start Day
-                <input id="period-start-monthday" name="periodStartMonthday" type="number" min="1" max="28" />
+            <label id="period-reset-monthday-label">
+                Reset Day
+                <input id="period-reset-monthday" name="periodResetMonthday" type="number" min="1" max="28" />
             </label>
         </div>
         <label id="period-reverse-label">
-            <span id="period-reverse-question">Start days from month end?
+            <span id="period-reverse-question">
+                <span>Count reset day from month end?</span>
                 <span class="period-tooltip" aria-describedby="period-reverse-text" tabindex="0">
                     <span id="period-reverse-text" class="period-tooltip-text">
-                        E.g. if checked, a start day of 1 will be the last day of the month, and 5 would be 5th-last.
+                        E.g. if checked, a reset day of 1 will be the last day of the month, and 5 would be 5th-last.
                     </span>
                 </span>
             </span>

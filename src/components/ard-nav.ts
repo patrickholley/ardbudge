@@ -39,7 +39,7 @@ class ArdNav extends HTMLElement {
             ?.addEventListener('click', () => this.toggleNav('add'));
     }
 
-    onDismount() {
+    onUnmount() {
         document.removeEventListener('click', this.handleDocumentClick);
     }
 }

@@ -103,12 +103,27 @@
 
     background: no-repeat center center;
     background-size: contain;
+    border: none;
     display: inline-block;
+    outline: none;
+}
+
+@define-mixin icon-action {
+    @mixin icon;
+
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+
+    @mixin hover-focus {
+        filter: brightness(1.25);
+    }
 }
 
 @define-mixin input-primary {
     @mixin style-primary;
 
+    cursor: text;
     height: 16px;
     padding: 5px;
     transition: 0.25s;
@@ -122,6 +137,8 @@
 @define-mixin input-secondary {
     @mixin input-primary;
     @mixin style-secondary;
+
+    cursor: text;
 }
 
 @define-mixin label-style {
@@ -139,24 +156,23 @@
     list-style-type: none;
     margin: 0;
     padding: 0;
-    width: 150px;
 
     a, a:visited {
         @mixin button-primary;
 
-        display: flex;
         align-items: center;
+        display: flex;
         justify-content: center;
         overflow: hidden;
         text-decoration: none;
         text-overflow: ellipsis;
         white-space: nowrap;
-        width: calc(100% - 20px);
+        width: 150px;
     }
 
     li {
-        background: var(--wheat);
         border-radius: 20px;
+        display: flex;
         margin: 5px 5px;
 
         &:last-child {
@@ -261,7 +277,7 @@
 
 @define-mixin style-primary {
     background-color: var(--wheat);
-    border: 2px solid transparent;
+    border: none;
     border-radius: 10px;
     color: var(--fudge);
     cursor: pointer;
@@ -269,13 +285,20 @@
     outline: none;
 
     &:disabled {
-        background-color: lightgray;
+        background-color: lightgrey;
     }
 
     @mixin hover-focus {
         background-color: var(--light-fudge);
         border-color: var(--fudge);
         outline: none;
+
+        &:disabled {
+            background-color: lightgrey;
+            border-color: transparent;
+            color: unset;
+            cursor: not-allowed;
+        }
     }
 }
 
@@ -309,21 +332,14 @@
     @mixin icon;
 
     background-image: url('/icons/tooltip.svg');
+    cursor: help;
     height: 16px;
-    position: absolute;
+    position: relative;
     width: 16px;
-
-    span {
-        @mixin tooltip-content;
-    }
 
     @mixin hover-focus {
         border: none;
         outline: none;
-
-        span {
-            display: block;
-        }
     }
 }
 
@@ -346,7 +362,7 @@
         border-width: 10px;
         content: '';
         position: absolute;
-        right: 76px;
+        right: 78px;
         top: 100%;
     }
 }

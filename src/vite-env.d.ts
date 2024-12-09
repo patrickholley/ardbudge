@@ -9,7 +9,7 @@ interface HTMLElement {
     disconnectedCallback?(): void;
     onRender?(): void;
     onStoreUpdate?(state?: ArdState): void;
-    onDismount?(): void;
+    onUnmount?(): void;
     componentTag?: string;
     formName?: string;
     legend?: string;

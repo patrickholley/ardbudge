@@ -1,11 +1,8 @@
 @import "mixins.css";
 
 #budget-start {
+    cursor: pointer;
     height: 24px;
-
-    &::-webkit-calendar-picker-indicator {
-        cursor: pointer;
-    }
 }
 
 select {
@@ -25,4 +22,14 @@ select {
 
 .period-tooltip {
     @mixin tooltip;
+
+    @mixin hover-focus {
+        .period-tooltip-text {
+            display: block;
+        }
+    }
+}
+
+.period-tooltip-text {
+    @mixin tooltip-content;
 }
